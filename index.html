@@ -1,0 +1,3597 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="description" content="منصة تعليمية تفاعلية ثلاثية الأبعاد تشرح الواجهة الأمامية والواجهة الخلفية وقاعدة البيانات في تطبيقات الويب باللغة العربية." />
+<meta name="theme-color" content="#000000" />
+<title>عالم تطبيقات الويب | منصة تعليمية تفاعلية - مستر احمد عواد</title>
+<noscript>
+  <style>
+    .reveal{ opacity:1 !important; transform:none !important; }
+    .main-nav{ max-height:none !important; }
+  </style>
+</noscript>
+<style>
+/* ============================================================
+   عالم تطبيقات الويب - نظام التصميم (أسود + نيون أخضر)
+   ============================================================ */
+:root{
+  --bg:#000000;
+  --bg2:#080808;
+  --card:#101010;
+  --card2:#0c0c0c;
+  --neon:#00FF66;
+  --neon2:#00CC55;
+  --neon-soft:rgba(0,255,102,0.14);
+  --text:#FFFFFF;
+  --muted:#B8B8B8;
+  --border:rgba(0,255,102,0.35);
+  --border-soft:rgba(0,255,102,0.18);
+  --danger:#ff4d5e;
+  --radius:20px;
+  --shadow-neon:0 0 24px rgba(0,255,102,0.22);
+  --shadow-neon-strong:0 0 45px rgba(0,255,102,0.40);
+  --font: "Segoe UI", "Noto Kufi Arabic", "Noto Sans Arabic", "Tahoma", "Dubai", "Cairo", system-ui, -apple-system, sans-serif;
+}
+
+*{ box-sizing:border-box; }
+
+html{
+  scroll-behavior:smooth;
+  scroll-padding-top:130px;
+  -webkit-text-size-adjust:100%;
+}
+
+body{
+  margin:0;
+  padding:0;
+  background:var(--bg);
+  color:var(--text);
+  font-family:var(--font);
+  font-size:17px;
+  line-height:1.9;
+  overflow-x:hidden;
+  min-height:100vh;
+  -webkit-font-smoothing:antialiased;
+}
+
+img, svg{ max-width:100%; display:block; }
+
+h1,h2,h3,h4{ line-height:1.5; margin:0 0 12px; font-weight:800; }
+
+p{ margin:0 0 14px; color:var(--muted); }
+
+a{ color:var(--neon); text-decoration:none; transition:.3s; }
+a:hover{ color:#fff; text-shadow:0 0 12px rgba(0,255,102,.8); }
+
+ul{ margin:0; padding:0; list-style:none; }
+
+::selection{ background:var(--neon); color:#000; }
+
+/* شريط التمرير */
+::-webkit-scrollbar{ width:10px; }
+::-webkit-scrollbar-track{ background:#050505; }
+::-webkit-scrollbar-thumb{ background:linear-gradient(#00FF66,#00CC55); border-radius:20px; }
+
+/* ===================== الخلفية المتحركة ===================== */
+.bg-fx{
+  position:fixed;
+  inset:0;
+  z-index:-2;
+  pointer-events:none;
+  background:
+    radial-gradient(circle at 15% 12%, rgba(0,255,102,0.16), transparent 45%),
+    radial-gradient(circle at 85% 25%, rgba(0,204,85,0.12), transparent 42%),
+    radial-gradient(circle at 50% 90%, rgba(0,255,102,0.10), transparent 50%),
+    #000000;
+}
+.bg-grid{
+  position:fixed;
+  inset:-2px;
+  z-index:-1;
+  pointer-events:none;
+  background-image:
+    linear-gradient(rgba(0,255,102,0.055) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,255,102,0.055) 1px, transparent 1px);
+  background-size:52px 52px;
+  will-change:background-position;
+  -webkit-mask-image:radial-gradient(circle at 50% 30%, #000 0%, transparent 78%);
+  mask-image:radial-gradient(circle at 50% 30%, #000 0%, transparent 78%);
+  animation:gridDrift 22s linear infinite;
+}
+@keyframes gridDrift{
+  0%{ background-position:0 0, 0 0; }
+  100%{ background-position:52px 52px, 52px 52px; }
+}
+.bg-orb{
+  position:fixed;
+  border-radius:50%;
+  filter:blur(70px);
+  z-index:-1;
+  pointer-events:none;
+  opacity:.35;
+}
+.orb-1{ width:340px; height:340px; background:rgba(0,255,102,.30); top:-90px; right:-80px; animation:orbFloat 16s ease-in-out infinite; }
+.orb-2{ width:280px; height:280px; background:rgba(0,204,85,.22); bottom:8%; left:-90px; animation:orbFloat 20s ease-in-out infinite reverse; }
+@keyframes orbFloat{
+  0%,100%{ transform:translate3d(0,0,0) scale(1); }
+  50%{ transform:translate3d(0,40px,0) scale(1.12); }
+}
+
+/* ===================== شريط تقدم التمرير ===================== */
+#scrollBar{
+  position:fixed;
+  top:0; right:0;
+  height:3px;
+  width:0%;
+  background:linear-gradient(90deg,#00CC55,#00FF66);
+  box-shadow:0 0 14px rgba(0,255,102,.9);
+  z-index:1200;
+  transition:width .12s linear;
+}
+
+/* ===================== الترويسة ===================== */
+.site-header{
+  position:sticky;
+  top:0;
+  z-index:1000;
+  background:rgba(0,0,0,0.82);
+  backdrop-filter:blur(16px);
+  -webkit-backdrop-filter:blur(16px);
+  border-bottom:1px solid var(--border-soft);
+  box-shadow:0 6px 30px rgba(0,255,102,0.07);
+}
+.header-top{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+  padding:12px clamp(14px,4vw,44px);
+  max-width:1400px;
+  margin:0 auto;
+}
+.brand{ display:flex; align-items:center; gap:14px; min-width:0; }
+.brand-badge{
+  width:52px; height:52px; flex:0 0 52px;
+  border-radius:16px;
+  display:grid; place-items:center;
+  background:linear-gradient(150deg,rgba(0,255,102,.20),rgba(0,0,0,.6));
+  border:1px solid var(--border);
+  box-shadow:0 0 22px rgba(0,255,102,.28), inset 0 0 18px rgba(0,255,102,.12);
+  animation:badgePulse 3.4s ease-in-out infinite;
+}
+@keyframes badgePulse{
+  0%,100%{ box-shadow:0 0 18px rgba(0,255,102,.22), inset 0 0 14px rgba(0,255,102,.10); }
+  50%{ box-shadow:0 0 34px rgba(0,255,102,.45), inset 0 0 22px rgba(0,255,102,.20); }
+}
+.brand-badge svg{ width:28px; height:28px; }
+.brand-text{ min-width:0; }
+.brand-name{
+  margin:0;
+  font-size:clamp(19px,2.4vw,26px);
+  font-weight:900;
+  color:#fff;
+  letter-spacing:.4px;
+  text-shadow:0 0 12px rgba(0,255,102,.65), 0 0 30px rgba(0,255,102,.28);
+}
+.brand-sub{
+  margin:0;
+  font-size:clamp(11px,1.5vw,14px);
+  color:var(--neon2);
+  letter-spacing:.6px;
+  opacity:.95;
+}
+.nav-toggle{
+  display:none;
+  background:rgba(0,255,102,.08);
+  border:1px solid var(--border);
+  color:var(--neon);
+  border-radius:14px;
+  width:48px; height:44px;
+  font-size:22px;
+  cursor:pointer;
+  transition:.3s;
+}
+.nav-toggle:hover{ background:rgba(0,255,102,.2); box-shadow:0 0 18px rgba(0,255,102,.4); }
+
+.main-nav{ border-top:1px solid rgba(0,255,102,0.10); position:relative; }
+.main-nav ul{
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
+  align-items:center;
+  gap:6px;
+  max-width:1400px;
+  margin:0 auto;
+  padding:8px clamp(10px,3vw,30px);
+}
+.nav-link{
+  display:inline-block;
+  padding:8px 14px;
+  border-radius:999px;
+  font-size:15px;
+  font-weight:700;
+  color:#e8e8e8;
+  border:1px solid transparent;
+  white-space:nowrap;
+  transition:.28s;
+}
+.nav-link:hover{
+  color:var(--neon);
+  border-color:var(--border);
+  background:rgba(0,255,102,.08);
+  box-shadow:0 0 16px rgba(0,255,102,.22);
+  transform:translateY(-2px);
+  text-shadow:none;
+}
+.nav-link.active{
+  color:#000;
+  background:linear-gradient(135deg,#00FF66,#00CC55);
+  border-color:transparent;
+  box-shadow:0 0 20px rgba(0,255,102,.45);
+}
+
+/* ===================== الأزرار ===================== */
+.btn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+  font-family:var(--font);
+  font-size:16px;
+  font-weight:800;
+  padding:14px 30px;
+  min-height:50px;
+  border:none;
+  border-radius:999px;
+  cursor:pointer;
+  background:linear-gradient(135deg,#00FF66,#00CC55);
+  color:#000;
+  box-shadow:0 0 22px rgba(0,255,102,.35);
+  transition:transform .25s, box-shadow .25s, filter .25s;
+  text-align:center;
+}
+.btn:hover{
+  transform:translateY(-4px) scale(1.02);
+  box-shadow:0 0 40px rgba(0,255,102,.65);
+  filter:brightness(1.08);
+  color:#000;
+}
+.btn:active{ transform:translateY(-1px) scale(.99); }
+.btn:focus-visible, .nav-link:focus-visible, .nav-toggle:focus-visible, .opt:focus-visible, .app-card:focus-visible{
+  outline:2px solid var(--neon);
+  outline-offset:3px;
+}
+.btn-ghost{
+  background:rgba(0,255,102,.06);
+  color:var(--neon);
+  border:1px solid var(--border);
+  box-shadow:inset 0 0 20px rgba(0,255,102,.06);
+}
+.btn-ghost:hover{ background:rgba(0,255,102,.16); color:#fff; }
+.btn-sm{ padding:10px 20px; min-height:42px; font-size:14px; }
+.btn[disabled]{ opacity:.45; cursor:not-allowed; transform:none; box-shadow:none; }
+
+/* ===================== الأقسام ===================== */
+.section{
+  position:relative;
+  max-width:1240px;
+  margin:0 auto;
+  padding:clamp(56px,7vw,96px) clamp(16px,4vw,40px);
+}
+.section + .section{ padding-top:0; }
+.section-head{ text-align:center; max-width:920px; margin:0 auto 46px; }
+.eyebrow{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  font-size:13px;
+  font-weight:800;
+  letter-spacing:1.2px;
+  color:var(--neon);
+  background:rgba(0,255,102,.08);
+  border:1px solid var(--border-soft);
+  border-radius:999px;
+  padding:6px 16px;
+  margin-bottom:16px;
+}
+.section-title{
+  font-size:clamp(27px,4.2vw,44px);
+  color:#fff;
+  text-shadow:0 0 14px rgba(0,255,102,.55), 0 0 40px rgba(0,255,102,.22);
+  margin-bottom:14px;
+}
+.section-title .accent{ color:var(--neon); text-shadow:0 0 18px rgba(0,255,102,.85); }
+.section-desc{ font-size:clamp(15px,2vw,18px); color:var(--muted); margin-bottom:0; }
+.divider{
+  width:120px; height:4px;
+  margin:18px auto 0;
+  border-radius:99px;
+  background:linear-gradient(90deg,transparent,#00FF66,transparent);
+  box-shadow:0 0 16px rgba(0,255,102,.7);
+}
+
+/* ===================== الكروت ===================== */
+.card{
+  position:relative;
+  background:linear-gradient(160deg,#101010 0%,#080808 100%);
+  border:1px solid var(--border-soft);
+  border-radius:var(--radius);
+  padding:clamp(18px,2.4vw,26px);
+  box-shadow:0 12px 34px rgba(0,0,0,.75);
+  transition:transform .35s cubic-bezier(.2,.7,.3,1), box-shadow .35s, border-color .35s;
+  overflow:hidden;
+}
+.card::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  border-radius:var(--radius);
+  background:radial-gradient(420px circle at var(--mx,50%) var(--my,0%), rgba(0,255,102,.13), transparent 60%);
+  opacity:0;
+  transition:opacity .35s;
+  pointer-events:none;
+}
+.card:hover{
+  transform:translateY(-10px);
+  border-color:var(--neon);
+  box-shadow:0 24px 50px rgba(0,0,0,.85), 0 0 34px rgba(0,255,102,.28);
+}
+.card:hover::after{ opacity:1; }
+.card h3{ font-size:clamp(18px,2.2vw,22px); color:#fff; }
+.card p{ font-size:15.5px; margin-bottom:10px; }
+.card-icon{
+  width:56px; height:56px;
+  border-radius:16px;
+  display:grid; place-items:center;
+  background:rgba(0,255,102,.08);
+  border:1px solid var(--border);
+  margin-bottom:14px;
+  box-shadow:0 0 18px rgba(0,255,102,.18);
+}
+.card-icon svg{ width:30px; height:30px; }
+.grid{ display:grid; gap:clamp(16px,2.2vw,24px); }
+.grid-2{ grid-template-columns:repeat(2,minmax(0,1fr)); }
+.grid-3{ grid-template-columns:repeat(3,minmax(0,1fr)); }
+
+.chip{
+  display:inline-block;
+  font-size:13px;
+  font-weight:700;
+  color:var(--neon);
+  background:rgba(0,255,102,.08);
+  border:1px solid var(--border-soft);
+  border-radius:999px;
+  padding:4px 12px;
+  margin:0 0 8px;
+}
+.hl{ color:var(--neon); font-weight:800; text-shadow:0 0 14px rgba(0,255,102,.5); }
+.note{
+  background:rgba(0,255,102,.05);
+  border:1px dashed var(--border);
+  border-radius:16px;
+  padding:16px 20px;
+  color:#d6d6d6;
+  font-size:15.5px;
+}
+.note strong{ color:var(--neon); }
+
+/* قائمة النقاط */
+.list-check li{
+  position:relative;
+  padding-right:30px;
+  margin-bottom:10px;
+  color:var(--muted);
+  font-size:15.5px;
+}
+.list-check li::before{
+  content:"";
+  position:absolute;
+  right:0; top:13px;
+  width:12px; height:12px;
+  border-radius:4px;
+  background:var(--neon);
+  box-shadow:0 0 12px rgba(0,255,102,.9);
+}
+.list-check li b{ color:#fff; }
+
+/* ===================== الهيرو ===================== */
+.hero{
+  position:relative;
+  max-width:1240px;
+  margin:0 auto;
+  padding:clamp(40px,6vw,84px) clamp(16px,4vw,40px) clamp(30px,4vw,50px);
+  display:grid;
+  grid-template-columns:1.05fr .95fr;
+  align-items:center;
+  gap:clamp(24px,4vw,50px);
+}
+.hero-badge{
+  display:inline-flex;
+  align-items:center;
+  gap:10px;
+  padding:8px 18px;
+  border-radius:999px;
+  border:1px solid var(--border);
+  background:rgba(0,255,102,.07);
+  color:var(--neon);
+  font-weight:800;
+  font-size:14px;
+  margin-bottom:22px;
+}
+.dot-live{
+  width:9px; height:9px; border-radius:50%;
+  background:var(--neon);
+  box-shadow:0 0 12px var(--neon);
+  animation:blink 1.6s ease-in-out infinite;
+}
+@keyframes blink{ 0%,100%{opacity:1} 50%{opacity:.25} }
+.hero-title{
+  font-size:clamp(32px,6vw,60px);
+  line-height:1.35;
+  color:#fff;
+  margin-bottom:18px;
+  text-shadow:0 0 18px rgba(0,255,102,.5), 0 0 55px rgba(0,255,102,.22);
+}
+.hero-title .accent{
+  display:block;
+  color:var(--neon);
+  text-shadow:0 0 22px rgba(0,255,102,.9), 0 0 60px rgba(0,255,102,.4);
+}
+.hero-sub{
+  font-size:clamp(16px,2.2vw,20px);
+  color:var(--muted);
+  max-width:620px;
+  margin-bottom:30px;
+}
+.hero-actions{ display:flex; flex-wrap:wrap; gap:14px; margin-bottom:34px; }
+.hero-stats{ display:flex; flex-wrap:wrap; gap:clamp(16px,3vw,38px); }
+.stat{ min-width:110px; }
+.stat-num{
+  font-size:clamp(24px,3.4vw,34px);
+  font-weight:900;
+  color:var(--neon);
+  text-shadow:0 0 18px rgba(0,255,102,.7);
+  line-height:1.2;
+}
+.stat-label{ font-size:13.5px; color:var(--muted); }
+
+/* مشاهد ثلاثية الأبعاد */
+.scene{ perspective:1000px; position:relative; }
+.scene-3d{
+  transform-style:preserve-3d;
+  animation:heroFloat 7s ease-in-out infinite;
+}
+@keyframes heroFloat{
+  0%,100%{ transform:rotateX(6deg) rotateY(-8deg) translateY(0); }
+  50%{ transform:rotateX(4deg) rotateY(-4deg) translateY(-16px); }
+}
+.art-wrap{
+  position:relative;
+  border-radius:24px;
+  border:1px solid var(--border-soft);
+  background:linear-gradient(160deg,rgba(0,255,102,.06),rgba(0,0,0,.5));
+  padding:clamp(10px,1.6vw,18px);
+  box-shadow:0 20px 50px rgba(0,0,0,.8), inset 0 0 40px rgba(0,255,102,.05);
+  overflow:hidden;
+}
+.art-wrap::before{
+  content:"";
+  position:absolute;
+  top:-60%; right:-30%;
+  width:70%; height:220%;
+  background:linear-gradient(90deg,transparent,rgba(0,255,102,.10),transparent);
+  transform:rotate(18deg);
+  animation:sheen 7s ease-in-out infinite;
+  pointer-events:none;
+}
+@keyframes sheen{
+  0%,100%{ transform:translateX(-40%) rotate(18deg); opacity:0; }
+  50%{ transform:translateX(60%) rotate(18deg); opacity:1; }
+}
+.art-caption{
+  text-align:center;
+  font-size:13.5px;
+  color:var(--neon2);
+  margin-top:12px;
+  letter-spacing:.4px;
+}
+
+/* رسوم متحركة داخل SVG */
+.float-slow{ animation:svgFloat 6s ease-in-out infinite; transform-box:fill-box; transform-origin:center; }
+.float-mid{ animation:svgFloat 4.6s ease-in-out infinite .4s; transform-box:fill-box; transform-origin:center; }
+.float-fast{ animation:svgFloat 3.6s ease-in-out infinite .8s; transform-box:fill-box; transform-origin:center; }
+@keyframes svgFloat{
+  0%,100%{ transform:translateY(0) }
+  50%{ transform:translateY(-10px) }
+}
+.dash-flow{ stroke-dasharray:10 12; animation:dashRun 1.4s linear infinite; }
+@keyframes dashRun{ to{ stroke-dashoffset:-44; } }
+.led{ animation:blink 1.4s steps(1,end) infinite; }
+.led-2{ animation-delay:.35s; }
+.led-3{ animation-delay:.7s; }
+.led-4{ animation-delay:1.05s; }
+.spin-slow{ animation:spin 9s linear infinite; transform-box:fill-box; transform-origin:center; }
+@keyframes spin{ to{ transform:rotate(360deg) } }
+.pulse-soft{ animation:pulseSoft 2.6s ease-in-out infinite; transform-box:fill-box; transform-origin:center; }
+@keyframes pulseSoft{ 0%,100%{ opacity:.45; transform:scale(1) } 50%{ opacity:1; transform:scale(1.06) } }
+
+/* ===================== الظهور عند التمرير ===================== */
+.reveal{ opacity:0; transform:translateY(34px); transition:opacity .8s ease, transform .8s cubic-bezier(.2,.7,.3,1); }
+.reveal.in{ opacity:1; transform:none; }
+.reveal.d1{ transition-delay:.12s } .reveal.d2{ transition-delay:.24s }
+.reveal.d3{ transition-delay:.36s } .reveal.d4{ transition-delay:.48s }
+.reveal.d5{ transition-delay:.6s }
+
+@media (prefers-reduced-motion: reduce){
+  *{ animation-duration:.001ms !important; animation-iteration-count:1 !important; transition-duration:.001ms !important; }
+  html{ scroll-behavior:auto; }
+  .reveal{ opacity:1; transform:none; }
+}
+
+/* ===================== الاستجابة ===================== */
+@media (max-width:1024px){
+  .hero{ grid-template-columns:1fr; text-align:center; }
+  .hero-sub{ margin-inline:auto; }
+  .hero-actions{ justify-content:center; }
+  .hero-stats{ justify-content:center; }
+  .scene-3d{ animation:none; }
+}
+@media (max-width:860px){
+  html{ scroll-padding-top:96px; }
+  .nav-toggle{ display:grid; place-items:center; }
+  .main-nav{
+    position:absolute;
+    top:100%;
+    right:0; left:0;
+    background:rgba(0,0,0,.97);
+    border-bottom:1px solid var(--border);
+    max-height:0;
+    overflow:hidden;
+    transition:max-height .4s ease;
+    box-shadow:0 20px 40px rgba(0,0,0,.9);
+  }
+  .main-nav.open{ max-height:560px; overflow-y:auto; }
+  .main-nav ul{ flex-direction:column; align-items:stretch; gap:6px; padding:12px 16px 18px; }
+  .nav-link{ display:block; text-align:center; padding:13px 12px; font-size:16px; border:1px solid var(--border-soft); }
+  .grid-3, .grid-2{ grid-template-columns:1fr; }
+}
+@media (max-width:560px){
+  body{ font-size:16px; }
+  .section{ padding-left:14px; padding-right:14px; }
+  .btn{ width:100%; }
+  .hero-actions{ width:100%; }
+  .card{ padding:18px 16px; }
+  .brand-badge{ width:44px; height:44px; flex-basis:44px; border-radius:13px; }
+}
+
+/* ============================================================
+   قسم تدفق البيانات التفاعلي
+   ============================================================ */
+.flow-panel{
+  background:linear-gradient(160deg,rgba(11,11,11,.86),rgba(5,5,5,.92));
+  backdrop-filter:blur(8px);
+  -webkit-backdrop-filter:blur(8px);
+  border:1px solid var(--border-soft);
+  border-radius:26px;
+  padding:clamp(16px,2.6vw,32px);
+  box-shadow:0 20px 60px rgba(0,0,0,.85), inset 0 0 60px rgba(0,255,102,.03);
+}
+.flow-stage{
+  display:flex;
+  align-items:stretch;
+  justify-content:space-between;
+  gap:clamp(6px,1.4vw,18px);
+  perspective:1200px;
+}
+.node{
+  flex:1 1 0;
+  min-width:0;
+  background:linear-gradient(165deg,#101010,#070707);
+  border:1px solid var(--border-soft);
+  border-radius:20px;
+  padding:clamp(12px,1.6vw,18px);
+  text-align:center;
+  transition:transform .45s cubic-bezier(.2,.7,.3,1), box-shadow .45s, border-color .45s;
+  transform-style:preserve-3d;
+  position:relative;
+}
+.node:hover{ border-color:var(--border); box-shadow:0 0 26px rgba(0,255,102,.20); }
+.node .node-art{ margin:0 auto 10px; max-width:150px; }
+.node h3{ font-size:clamp(15px,1.8vw,19px); margin-bottom:4px; }
+.node .node-sub{ font-size:13px; color:var(--neon2); margin:0; }
+.node.active{
+  border-color:var(--neon);
+  box-shadow:0 0 45px rgba(0,255,102,.45), inset 0 0 30px rgba(0,255,102,.08);
+  transform:translateY(-8px) scale(1.03);
+}
+.node.done{ border-color:rgba(0,255,102,.55); box-shadow:0 0 22px rgba(0,255,102,.20); }
+.node-tag{
+  position:absolute;
+  top:-13px;
+  right:50%;
+  transform:translateX(50%);
+  font-size:11.5px;
+  font-weight:800;
+  background:linear-gradient(135deg,#00FF66,#00CC55);
+  color:#000;
+  padding:2px 12px;
+  border-radius:999px;
+  white-space:nowrap;
+  opacity:0;
+  transition:.35s;
+}
+.node.active .node-tag, .node.done .node-tag{ opacity:1; }
+
+/* شاشة المتصفح المصغرة داخل الواجهة الأمامية */
+.mini-screen{
+  background:#050505;
+  border:1px solid var(--border-soft);
+  border-radius:14px;
+  padding:10px;
+  min-height:132px;
+  text-align:right;
+  position:relative;
+  overflow:hidden;
+}
+.mini-bar{ display:flex; align-items:center; gap:6px; margin-bottom:9px; }
+.mini-dot{ width:8px; height:8px; border-radius:50%; background:rgba(0,255,102,.55); }
+.mini-dot:nth-child(2){ background:rgba(0,255,102,.35); }
+.mini-dot:nth-child(3){ background:rgba(0,255,102,.2); }
+.mini-url{
+  flex:1;
+  font-size:10.5px;
+  color:var(--neon2);
+  background:rgba(0,255,102,.07);
+  border:1px solid var(--border-soft);
+  border-radius:99px;
+  padding:2px 10px;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  direction:ltr;
+  text-align:left;
+}
+.mini-search{
+  display:flex;
+  align-items:center;
+  gap:6px;
+  background:#000;
+  border:1px solid var(--border-soft);
+  border-radius:99px;
+  padding:5px 10px;
+  font-size:11.5px;
+  color:#8f8f8f;
+  margin-bottom:9px;
+  min-height:26px;
+}
+.mini-search .cursor{
+  display:inline-block;
+  width:1.5px; height:12px;
+  background:var(--neon);
+  margin-inline-start:2px;
+  animation:blink 1s steps(1,end) infinite;
+}
+.mini-search.typing{ border-color:var(--neon); box-shadow:0 0 16px rgba(0,255,102,.28); color:#fff; }
+.mini-results{ display:grid; gap:6px; }
+.mini-result{
+  display:flex;
+  align-items:center;
+  gap:7px;
+  background:rgba(0,255,102,.06);
+  border:1px solid var(--border-soft);
+  border-radius:10px;
+  padding:5px 8px;
+  font-size:11px;
+  color:#dcdcdc;
+  opacity:0;
+  transform:translateY(8px);
+}
+.mini-result.show{ animation:resultIn .5s cubic-bezier(.2,.7,.3,1) forwards; }
+@keyframes resultIn{ to{ opacity:1; transform:none; } }
+.mini-thumb{
+  width:22px; height:22px; flex:0 0 22px;
+  border-radius:6px;
+  background:linear-gradient(135deg,rgba(0,255,102,.35),rgba(0,255,102,.05));
+  border:1px solid var(--border-soft);
+}
+.mini-empty{ font-size:11px; color:#6d6d6d; text-align:center; padding-top:14px; }
+
+/* الموصلات والأسهم */
+.connector{
+  flex:0 0 clamp(46px,7vw,90px);
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  position:relative;
+}
+.conn-track{
+  position:relative;
+  width:100%;
+  height:5px;
+  border-radius:99px;
+  background:rgba(0,255,102,.10);
+  overflow:visible;
+}
+.conn-track::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  border-radius:99px;
+  background:linear-gradient(90deg,rgba(0,255,102,.35),rgba(0,255,102,.35));
+  opacity:0;
+  transition:opacity .4s;
+}
+.connector.active .conn-track::after{ opacity:1; box-shadow:0 0 18px rgba(0,255,102,.55); }
+.packet{
+  position:absolute;
+  top:50%;
+  left:0;
+  width:16px; height:16px;
+  margin-top:-8px;
+  margin-left:-8px;
+  border-radius:6px;
+  background:linear-gradient(135deg,#00FF66,#00CC55);
+  box-shadow:0 0 18px rgba(0,255,102,.95), 0 0 40px rgba(0,255,102,.45);
+  opacity:0;
+  animation-duration:1.15s;
+  animation-timing-function:linear;
+  animation-iteration-count:infinite;
+}
+.connector.active .packet{ opacity:1; }
+.connector.dir-left .packet{ animation-name:flowLeft; }
+.connector.dir-right .packet{ animation-name:flowRight; }
+@keyframes flowLeft{ from{ left:100%; } to{ left:0%; } }
+@keyframes flowRight{ from{ left:0%; } to{ left:100%; } }
+.flow-stage.paused .packet{ animation-play-state:paused; }
+.conn-tag{
+  font-size:11px;
+  font-weight:700;
+  color:var(--neon2);
+  background:rgba(0,255,102,.07);
+  border:1px solid var(--border-soft);
+  border-radius:99px;
+  padding:2px 8px;
+  white-space:nowrap;
+  opacity:.55;
+  transition:.4s;
+}
+.connector.active .conn-tag{ opacity:1; color:var(--neon); border-color:var(--border); box-shadow:0 0 14px rgba(0,255,102,.25); }
+
+/* لوحة الشرح والتحكم */
+.flow-explain{
+  margin-top:clamp(18px,2.4vw,26px);
+  display:grid;
+  grid-template-columns:1.15fr .85fr;
+  gap:clamp(14px,2vw,22px);
+  align-items:start;
+}
+.step-box{
+  background:linear-gradient(160deg,#0d0d0d,#060606);
+  border:1px solid var(--border);
+  border-radius:18px;
+  padding:clamp(14px,2vw,22px);
+  min-height:150px;
+}
+.step-count{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  font-size:13px;
+  font-weight:800;
+  color:#000;
+  background:linear-gradient(135deg,#00FF66,#00CC55);
+  border-radius:99px;
+  padding:3px 14px;
+  margin-bottom:12px;
+}
+.step-title{ font-size:clamp(17px,2.2vw,22px); color:#fff; margin-bottom:8px; }
+.step-text{ font-size:15.5px; color:var(--muted); margin:0; }
+.step-visual{ margin-top:12px; font-size:14px; color:var(--neon2); }
+.step-dots{ display:flex; flex-wrap:wrap; gap:7px; margin-top:14px; }
+.step-dot{
+  position:relative;
+  width:26px; height:26px;
+  border-radius:50%;
+  border:1px solid transparent;
+  background:transparent;
+  cursor:pointer;
+  padding:0;
+  transition:.3s;
+}
+.step-dot::after{
+  content:"";
+  position:absolute;
+  inset:7px;
+  border-radius:50%;
+  background:transparent;
+  border:1px solid var(--border);
+  transition:.3s;
+}
+.step-dot:hover::after{ background:rgba(0,255,102,.35); }
+.step-dot.now::after{ background:var(--neon); box-shadow:0 0 14px var(--neon); transform:scale(1.15); }
+.step-dot.past::after{ background:rgba(0,255,102,.5); }
+
+.flow-controls{
+  background:linear-gradient(160deg,#0d0d0d,#060606);
+  border:1px solid var(--border-soft);
+  border-radius:18px;
+  padding:clamp(14px,2vw,20px);
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
+.flow-controls .btn{ width:100%; }
+.flow-hint{ font-size:13px; color:var(--neon2); text-align:center; margin:0; }
+
+/* ============================================================
+   كروت تطبيقات الويب
+   ============================================================ */
+.app-grid{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:clamp(16px,2.2vw,24px);
+}
+.app-card{
+  position:relative;
+  text-align:right;
+  background:linear-gradient(160deg,#101010,#070707);
+  border:1px solid var(--border-soft);
+  border-radius:22px;
+  padding:0;
+  cursor:pointer;
+  overflow:hidden;
+  font-family:var(--font);
+  color:var(--text);
+  transition:transform .35s cubic-bezier(.2,.7,.3,1), box-shadow .35s, border-color .35s;
+}
+.app-card:hover, .app-card:focus-visible{
+  transform:translateY(-10px);
+  border-color:var(--neon);
+  box-shadow:0 24px 50px rgba(0,0,0,.85), 0 0 34px rgba(0,255,102,.28);
+}
+.app-card .art-wrap{ border:none; border-radius:0; box-shadow:none; background:transparent; }
+.app-card .art-wrap::before{ display:none; }
+.app-body{ padding:0 clamp(14px,1.8vw,20px) clamp(16px,2vw,20px); }
+.app-card h3{ font-size:clamp(18px,2vw,21px); margin-bottom:6px; }
+.app-card .app-short{ font-size:14.5px; color:var(--muted); margin-bottom:12px; }
+.app-layers{ display:grid; gap:8px; }
+.app-layer{
+  display:flex;
+  gap:9px;
+  align-items:flex-start;
+  background:rgba(0,255,102,.05);
+  border:1px solid var(--border-soft);
+  border-radius:12px;
+  padding:8px 11px;
+  font-size:13.5px;
+  color:#cfcfcf;
+  transition:.3s;
+}
+.app-card:hover .app-layer{ border-color:rgba(0,255,102,.35); }
+.app-layer .tag{
+  flex:0 0 auto;
+  font-size:11.5px;
+  font-weight:800;
+  color:#000;
+  background:linear-gradient(135deg,#00FF66,#00CC55);
+  border-radius:8px;
+  padding:1px 8px;
+  margin-top:3px;
+}
+.app-more{
+  max-height:0;
+  opacity:0;
+  overflow:hidden;
+  transition:max-height .5s ease, opacity .4s ease, margin .4s ease;
+}
+.app-card.open .app-more{ max-height:400px; opacity:1; margin-top:10px; }
+.app-toggle{
+  margin-top:12px;
+  display:inline-flex;
+  align-items:center;
+  gap:7px;
+  font-size:13.5px;
+  font-weight:800;
+  color:var(--neon);
+}
+.app-toggle .chev{ transition:transform .35s; }
+.app-card.open .app-toggle .chev{ transform:rotate(180deg); }
+
+/* ============================================================
+   الأنشطة التفاعلية
+   ============================================================ */
+.quiz-card{
+  background:linear-gradient(160deg,#101010,#070707);
+  border:1px solid var(--border-soft);
+  border-radius:20px;
+  padding:clamp(16px,2.2vw,24px);
+  transition:border-color .35s, box-shadow .35s, transform .35s;
+}
+.quiz-card:hover{ border-color:var(--border); box-shadow:0 0 30px rgba(0,255,102,.18); transform:translateY(-6px); }
+.quiz-q{ font-size:clamp(16px,2vw,19px); color:#fff; font-weight:800; margin-bottom:14px; }
+.opts{ display:grid; gap:10px; }
+.opt{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  width:100%;
+  text-align:right;
+  font-family:var(--font);
+  font-size:15.5px;
+  color:#e2e2e2;
+  background:#050505;
+  border:1px solid var(--border-soft);
+  border-radius:14px;
+  padding:13px 15px;
+  min-height:52px;
+  cursor:pointer;
+  transition:transform .25s, border-color .25s, background .25s, box-shadow .25s;
+}
+.opt:hover:not(.locked){
+  border-color:var(--neon);
+  background:rgba(0,255,102,.07);
+  transform:translateX(-6px);
+  box-shadow:0 0 20px rgba(0,255,102,.22);
+}
+.opt .key{
+  flex:0 0 30px;
+  width:30px; height:30px;
+  display:grid; place-items:center;
+  border-radius:9px;
+  background:rgba(0,255,102,.10);
+  border:1px solid var(--border-soft);
+  color:var(--neon);
+  font-weight:900;
+  font-size:14px;
+}
+.opt.correct{
+  border-color:var(--neon);
+  background:rgba(0,255,102,.16);
+  color:#fff;
+  box-shadow:0 0 26px rgba(0,255,102,.35);
+}
+.opt.correct .key{ background:var(--neon); color:#000; }
+.opt.wrong{
+  border-color:var(--danger);
+  background:rgba(255,77,94,.12);
+  color:#fff;
+  box-shadow:0 0 22px rgba(255,77,94,.22);
+}
+.opt.wrong .key{ background:var(--danger); color:#fff; }
+.opt.locked{ cursor:default; }
+.feedback{
+  margin-top:14px;
+  border-radius:14px;
+  padding:12px 15px;
+  font-size:15px;
+  font-weight:700;
+  display:none;
+  align-items:flex-start;
+  gap:9px;
+  line-height:1.8;
+}
+.feedback.show{ display:flex; animation:fbIn .35s ease; }
+@keyframes fbIn{ from{ opacity:0; transform:translateY(8px) } to{ opacity:1; transform:none } }
+.feedback.good{ background:rgba(0,255,102,.12); border:1px solid var(--neon); color:var(--neon); }
+.feedback.bad{ background:rgba(255,77,94,.10); border:1px solid var(--danger); color:#ffb3ba; }
+.feedback .fb-body{ color:#dcdcdc; font-weight:400; font-size:14.5px; margin-top:4px; }
+.feedback .fb-body b{ color:#fff; }
+
+/* ============================================================
+   الاختبار النهائي
+   ============================================================ */
+.exam-panel{
+  background:linear-gradient(160deg,rgba(11,11,11,.86),rgba(5,5,5,.92));
+  backdrop-filter:blur(8px);
+  -webkit-backdrop-filter:blur(8px);
+  border:1px solid var(--border);
+  border-radius:26px;
+  padding:clamp(16px,2.6vw,34px);
+  box-shadow:0 24px 70px rgba(0,0,0,.9), inset 0 0 70px rgba(0,255,102,.03);
+}
+.exam-top{
+  display:flex;
+  flex-wrap:wrap;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  margin-bottom:16px;
+}
+.exam-progress-text{ font-size:14.5px; font-weight:800; color:var(--neon); }
+.exam-score-live{ font-size:14px; color:var(--muted); }
+.exam-score-live b{ color:var(--neon); }
+.progress-track{
+  height:10px;
+  background:rgba(0,255,102,.08);
+  border:1px solid var(--border-soft);
+  border-radius:99px;
+  overflow:hidden;
+  margin-bottom:22px;
+}
+.progress-fill{
+  height:100%;
+  width:0%;
+  border-radius:99px;
+  background:linear-gradient(90deg,#00CC55,#00FF66);
+  box-shadow:0 0 18px rgba(0,255,102,.7);
+  transition:width .5s cubic-bezier(.2,.7,.3,1);
+}
+.exam-q{
+  font-size:clamp(18px,2.4vw,24px);
+  color:#fff;
+  font-weight:800;
+  margin-bottom:18px;
+  line-height:1.7;
+}
+.exam-q .qnum{
+  color:var(--neon);
+  text-shadow:0 0 16px rgba(0,255,102,.7);
+  margin-inline-end:6px;
+}
+.exam-actions{
+  margin-top:20px;
+  display:flex;
+  flex-wrap:wrap;
+  gap:12px;
+  align-items:center;
+  justify-content:space-between;
+}
+.exam-nav{ display:flex; flex-wrap:wrap; gap:12px; }
+
+/* شاشة النتيجة */
+.result-wrap{ text-align:center; }
+.result-ring{ width:min(240px,68vw); margin:0 auto 18px; position:relative; }
+.result-ring svg{ width:100%; height:auto; transform:rotate(-90deg); }
+.ring-bg{ fill:none; stroke:rgba(0,255,102,.12); stroke-width:12; }
+.ring-fg{
+  fill:none;
+  stroke:url(#resGrad);
+  stroke-width:12;
+  stroke-linecap:round;
+  stroke-dasharray:534;
+  stroke-dashoffset:534;
+  transition:stroke-dashoffset 1.4s cubic-bezier(.2,.7,.3,1);
+  filter:drop-shadow(0 0 12px rgba(0,255,102,.7));
+}
+.ring-center{
+  position:absolute;
+  inset:0;
+  display:grid;
+  place-content:center;
+  gap:2px;
+}
+.ring-score{ font-size:clamp(30px,6vw,44px); font-weight:900; color:#fff; text-shadow:0 0 20px rgba(0,255,102,.7); line-height:1.1; }
+.ring-percent{ font-size:15px; font-weight:800; color:var(--neon); }
+.result-title{ font-size:clamp(24px,3.6vw,34px); color:#fff; text-shadow:0 0 16px rgba(0,255,102,.55); margin-bottom:10px; }
+.result-msg{ font-size:clamp(16px,2vw,19px); color:var(--neon); font-weight:800; margin-bottom:22px; }
+.result-stats{ display:flex; flex-wrap:wrap; justify-content:center; gap:14px; margin-bottom:24px; }
+.result-stat{
+  background:rgba(0,255,102,.06);
+  border:1px solid var(--border-soft);
+  border-radius:14px;
+  padding:10px 20px;
+  min-width:120px;
+}
+.result-stat .n{ font-size:22px; font-weight:900; color:var(--neon); }
+.result-stat .l{ font-size:13px; color:var(--muted); }
+.review-list{ text-align:right; display:grid; gap:10px; margin-bottom:24px; }
+.review-item{
+  background:#060606;
+  border:1px solid var(--border-soft);
+  border-radius:14px;
+  padding:11px 14px;
+  font-size:14px;
+  color:var(--muted);
+}
+.review-item .r-head{ display:flex; align-items:center; gap:8px; margin-bottom:5px; flex-wrap:wrap; }
+.review-item .r-badge{
+  font-size:12px; font-weight:800; border-radius:99px; padding:1px 10px;
+}
+.review-item.ok .r-badge{ background:rgba(0,255,102,.16); color:var(--neon); border:1px solid var(--neon); }
+.review-item.no .r-badge{ background:rgba(255,77,94,.12); color:#ffb3ba; border:1px solid var(--danger); }
+.review-item .r-q{ color:#fff; font-weight:700; }
+.review-item .r-a b{ color:var(--neon); }
+.review-item.no .r-a b{ color:#ffb3ba; }
+
+/* ============================================================
+   الفوتر + زر العودة للأعلى
+   ============================================================ */
+.site-footer{
+  margin-top:40px;
+  border-top:1px solid var(--border);
+  background:linear-gradient(180deg,rgba(0,255,102,.05),rgba(0,0,0,.9));
+  padding:clamp(34px,5vw,56px) clamp(16px,4vw,40px) 26px;
+  text-align:center;
+}
+.footer-inner{ max-width:1100px; margin:0 auto; }
+.footer-name{
+  font-size:clamp(22px,3.4vw,32px);
+  font-weight:900;
+  color:#fff;
+  margin-bottom:6px;
+  text-shadow:0 0 16px rgba(0,255,102,.6), 0 0 46px rgba(0,255,102,.25);
+}
+.footer-role{ font-size:clamp(14px,2vw,17px); color:var(--neon); font-weight:800; margin-bottom:4px; }
+.footer-sub{ font-size:14.5px; color:var(--muted); margin-bottom:22px; }
+.footer-links{
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
+  gap:8px 10px;
+  margin-bottom:22px;
+}
+.footer-links a{
+  font-size:14px;
+  color:#d9d9d9;
+  border:1px solid var(--border-soft);
+  border-radius:99px;
+  padding:9px 16px;
+  min-height:38px;
+  display:inline-flex;
+  align-items:center;
+  transition:.28s;
+}
+.footer-links a:hover{
+  color:#000;
+  background:linear-gradient(135deg,#00FF66,#00CC55);
+  border-color:transparent;
+  box-shadow:0 0 20px rgba(0,255,102,.45);
+  text-shadow:none;
+  transform:translateY(-3px);
+}
+.footer-bottom{
+  border-top:1px solid rgba(0,255,102,.12);
+  padding-top:18px;
+  font-size:13.5px;
+  color:#8f8f8f;
+}
+.footer-bottom .hl{ font-size:14.5px; }
+
+#toTop{
+  position:fixed;
+  bottom:22px;
+  left:22px;
+  z-index:900;
+  width:52px; height:52px;
+  border-radius:50%;
+  display:grid; place-items:center;
+  background:linear-gradient(135deg,#00FF66,#00CC55);
+  color:#000;
+  border:none;
+  font-size:22px;
+  cursor:pointer;
+  box-shadow:0 0 26px rgba(0,255,102,.5);
+  opacity:0;
+  visibility:hidden;
+  transform:translateY(14px);
+  transition:.35s;
+}
+#toTop.show{ opacity:1; visibility:visible; transform:none; }
+#toTop:hover{ box-shadow:0 0 42px rgba(0,255,102,.8); transform:translateY(-4px); }
+
+/* ============================================================
+   تفاصيل إضافية
+   ============================================================ */
+.node-status{
+  font-size:12.5px;
+  color:var(--neon2);
+  margin:0 0 10px;
+  min-height:22px;
+  transition:.35s;
+}
+.node.active .node-status{ color:var(--neon); text-shadow:0 0 12px rgba(0,255,102,.6); }
+.node.done .node-status{ color:#8f8f8f; }
+
+/* حركة الرسم ثلاثي الأبعاد داخل الكرت عند المرور بالماوس */
+.card .art-wrap, .app-card .art-wrap{
+  transition:transform .45s cubic-bezier(.2,.7,.3,1), box-shadow .45s, border-color .45s;
+}
+.card:hover .art-wrap, .app-card:hover .art-wrap{
+  transform:translateY(-8px) scale(1.03);
+  border-color:var(--border);
+  box-shadow:0 18px 40px rgba(0,0,0,.7), 0 0 30px rgba(0,255,102,.22);
+}
+.app-card:active{ transform:scale(.99); }
+.quiz-card:active{ transform:scale(.99); }
+
+/* ============================================================
+   استجابة إضافية
+   ============================================================ */
+@media (max-width:1024px){
+  .flow-explain{ grid-template-columns:1fr; }
+  .app-grid{ grid-template-columns:repeat(2,minmax(0,1fr)); }
+}
+@media (max-width:860px){
+  .flow-stage{ flex-direction:column; align-items:stretch; gap:14px; }
+  .connector{ flex:0 0 auto; height:76px; }
+  .conn-track{ width:5px; height:100%; }
+  .conn-track::after{ background:linear-gradient(180deg,rgba(0,255,102,.35),rgba(0,255,102,.35)); }
+  .packet{
+    top:0; left:50%;
+    margin:0 0 0 -8px;
+    animation-duration:1s;
+  }
+  @keyframes flowLeft{ from{ top:100%; } to{ top:0%; } }
+  @keyframes flowRight{ from{ top:0%; } to{ top:100%; } }
+  .connector.dir-left .packet{ animation-name:flowLeft; }
+  .connector.dir-right .packet{ animation-name:flowRight; }
+  .conn-tag{ font-size:10.5px; }
+  .node.active{ transform:translateY(-4px) scale(1.01); }
+}
+@media (max-width:680px){
+  .app-grid{ grid-template-columns:1fr; }
+  .exam-actions{ flex-direction:column-reverse; align-items:stretch; }
+  .exam-nav{ flex-direction:column-reverse; }
+}
+
+/* منع بقاء تأثيرات الماوس على شاشات اللمس */
+@media (hover:none){
+  .card:hover, .app-card:hover, .quiz-card:hover, .node:hover, .opt:hover,
+  .btn:hover, .nav-link:hover, #toTop:hover{
+    transform:none;
+  }
+  .card:hover .art-wrap, .app-card:hover .art-wrap{ transform:none; }
+  .opt:hover:not(.locked){ transform:none; }
+  .footer-links a:hover{ transform:none; }
+}
+</style>
+</head>
+<body>
+
+<!-- ===================== طبقات الخلفية المتحركة ===================== -->
+<div class="bg-fx" aria-hidden="true"></div>
+<div class="bg-grid" aria-hidden="true"></div>
+<div class="bg-orb orb-1" aria-hidden="true"></div>
+<div class="bg-orb orb-2" aria-hidden="true"></div>
+<div id="scrollBar" aria-hidden="true"></div>
+
+<!-- ===================== الترويسة ===================== -->
+<header class="site-header">
+  <div class="header-top">
+    <div class="brand">
+      <div class="brand-badge" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#00FF66" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M8 6 3 12l5 6" />
+          <path d="m16 6 5 6-5 6" />
+          <path d="M13 4 11 20" />
+        </svg>
+      </div>
+      <div class="brand-text">
+        <h1 class="brand-name">مستر احمد عواد</h1>
+        <p class="brand-sub">إنشاء المبرمج حسين رضا</p>
+      </div>
+    </div>
+    <button class="nav-toggle" id="navToggle" type="button" aria-label="فتح أو إغلاق قائمة التنقل" aria-expanded="false" aria-controls="mainNav">☰</button>
+  </div>
+
+  <nav class="main-nav" id="mainNav" aria-label="القائمة الرئيسية">
+    <ul>
+      <li><a class="nav-link" href="#home">الرئيسية</a></li>
+      <li><a class="nav-link" href="#intro">مقدمة عن تطبيقات الويب</a></li>
+      <li><a class="nav-link" href="#frontend">الواجهة الأمامية</a></li>
+      <li><a class="nav-link" href="#backend">الواجهة الخلفية</a></li>
+      <li><a class="nav-link" href="#database">قاعدة البيانات</a></li>
+      <li><a class="nav-link" href="#flow">تدفق البيانات</a></li>
+      <li><a class="nav-link" href="#apps">تطبيقات الويب</a></li>
+      <li><a class="nav-link" href="#exam">الاختبار</a></li>
+    </ul>
+  </nav>
+</header>
+
+<main>
+
+<!-- ===================== الواجهة الرئيسية (الهيرو) ===================== -->
+<section class="hero" id="home">
+  <div class="hero-copy">
+    <span class="hero-badge"><span class="dot-live" aria-hidden="true"></span> منصة تعليمية تفاعلية بالذكاء البصري</span>
+    <h2 class="hero-title">
+      اكتشف عالم
+      <span class="accent">تطبيقات الويب</span>
+    </h2>
+    <p class="hero-sub">
+      تعلم كيف تعمل المواقع والتطبيقات من الداخل، واكتشف أسرار الواجهة الأمامية والواجهة الخلفية وقواعد البيانات.
+    </p>
+    <div class="hero-actions">
+      <a class="btn" href="#intro">ابدأ التعلم</a>
+      <a class="btn btn-ghost" href="#flow">اكتشف كيف تعمل تطبيقات الويب</a>
+    </div>
+    <div class="hero-stats">
+      <div class="stat">
+        <div class="stat-num">3</div>
+        <div class="stat-label">طبقات رئيسية</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">7</div>
+        <div class="stat-label">خطوات في تدفق البيانات</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">12</div>
+        <div class="stat-label">سؤال في الاختبار</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-art scene">
+    <div class="art-wrap scene-3d">
+      <svg viewBox="0 0 620 470" role="img" aria-label="رسم توضيحي ثلاثي الأبعاد لحاسوب مستقبلي متصل بخادم وقاعدة بيانات بخطوط مضيئة">
+        <defs>
+          <linearGradient id="hScreen" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#04301a" />
+            <stop offset="55%" stop-color="#02120a" />
+            <stop offset="100%" stop-color="#000000" />
+          </linearGradient>
+          <linearGradient id="hBody" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#141414" />
+            <stop offset="100%" stop-color="#050505" />
+          </linearGradient>
+          <linearGradient id="hNeon" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#00FF66" />
+            <stop offset="100%" stop-color="#00CC55" />
+          </linearGradient>
+          <linearGradient id="hMetal" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#1d1d1d" />
+            <stop offset="100%" stop-color="#0a0a0a" />
+          </linearGradient>
+          <radialGradient id="hHalo" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#00FF66" stop-opacity="0.30" />
+            <stop offset="100%" stop-color="#00FF66" stop-opacity="0" />
+          </radialGradient>
+          <filter id="hGlow" x="-60%" y="-60%" width="220%" height="220%">
+            <feGaussianBlur stdDeviation="7" result="blur" />
+            <feMerge>
+              <feMergeNode in="blur" />
+              <feMergeNode in="SourceGraphic" />
+            </feMerge>
+          </filter>
+        </defs>
+
+        <!-- هالة خلفية -->
+        <ellipse cx="310" cy="230" rx="290" ry="205" fill="url(#hHalo)" />
+
+        <!-- خطوط الاتصال المضيئة -->
+        <g fill="none" stroke="#00FF66" stroke-width="2.2" opacity="0.85">
+          <path class="dash-flow" d="M150 190 C110 190 96 190 60 190" />
+          <path class="dash-flow" d="M470 190 C510 190 524 190 560 190" />
+          <path class="dash-flow" d="M310 296 C310 340 300 366 300 402" />
+          <path class="dash-flow" d="M470 250 C520 292 528 316 536 340" />
+        </g>
+
+        <!-- الحاسوب المستقبلي -->
+        <g class="float-slow">
+          <!-- الظل -->
+          <ellipse cx="310" cy="322" rx="120" ry="14" fill="#00FF66" opacity="0.14" />
+          <!-- جسم الشاشة -->
+          <rect x="150" y="66" width="320" height="222" rx="18" fill="url(#hBody)" stroke="#00FF66" stroke-opacity="0.45" stroke-width="2" />
+          <rect x="158" y="74" width="304" height="206" rx="12" fill="url(#hScreen)" stroke="#00FF66" stroke-opacity="0.25" stroke-width="1" />
+          <!-- شريط المتصفح -->
+          <rect x="168" y="86" width="284" height="18" rx="9" fill="#000000" stroke="#00FF66" stroke-opacity="0.25" stroke-width="1" />
+          <circle cx="180" cy="95" r="3.4" fill="#00FF66" />
+          <circle cx="191" cy="95" r="3.4" fill="#00FF66" opacity="0.55" />
+          <circle cx="202" cy="95" r="3.4" fill="#00FF66" opacity="0.3" />
+          <rect x="214" y="90" width="150" height="10" rx="5" fill="#00FF66" opacity="0.18" />
+          <!-- محتوى الصفحة -->
+          <rect x="168" y="116" width="120" height="13" rx="6" fill="#00FF66" opacity="0.85" filter="url(#hGlow)" />
+          <rect x="168" y="138" width="180" height="8" rx="4" fill="#ffffff" opacity="0.22" />
+          <rect x="168" y="152" width="150" height="8" rx="4" fill="#ffffff" opacity="0.16" />
+          <rect x="168" y="172" width="86" height="26" rx="13" fill="url(#hNeon)" />
+          <rect x="266" y="172" width="62" height="26" rx="13" fill="none" stroke="#00FF66" stroke-opacity="0.6" stroke-width="1.4" />
+          <rect x="168" y="210" width="82" height="56" rx="8" fill="#00FF66" opacity="0.12" stroke="#00FF66" stroke-opacity="0.35" stroke-width="1" />
+          <rect x="258" y="210" width="82" height="56" rx="8" fill="#00FF66" opacity="0.12" stroke="#00FF66" stroke-opacity="0.35" stroke-width="1" />
+          <rect x="348" y="210" width="82" height="56" rx="8" fill="#00FF66" opacity="0.12" stroke="#00FF66" stroke-opacity="0.35" stroke-width="1" />
+          <!-- القاعدة -->
+          <rect x="286" y="288" width="48" height="22" fill="url(#hMetal)" />
+          <rect x="252" y="308" width="116" height="14" rx="7" fill="url(#hMetal)" stroke="#00FF66" stroke-opacity="0.35" stroke-width="1" />
+        </g>
+
+        <!-- الخادم -->
+        <g class="float-mid">
+          <rect x="18" y="118" width="112" height="150" rx="12" fill="url(#hBody)" stroke="#00FF66" stroke-opacity="0.4" stroke-width="1.8" />
+          <rect x="28" y="130" width="92" height="36" rx="6" fill="#000000" stroke="#00FF66" stroke-opacity="0.3" stroke-width="1" />
+          <rect x="28" y="172" width="92" height="36" rx="6" fill="#000000" stroke="#00FF66" stroke-opacity="0.3" stroke-width="1" />
+          <rect x="28" y="214" width="92" height="36" rx="6" fill="#000000" stroke="#00FF66" stroke-opacity="0.3" stroke-width="1" />
+          <circle class="led" cx="40" cy="142" r="4" fill="#00FF66" filter="url(#hGlow)" />
+          <circle class="led led-2" cx="40" cy="184" r="4" fill="#00FF66" filter="url(#hGlow)" />
+          <circle class="led led-3" cx="40" cy="226" r="4" fill="#00FF66" filter="url(#hGlow)" />
+          <g fill="#00FF66" opacity="0.35">
+            <rect x="54" y="138" width="58" height="3" rx="1.5" />
+            <rect x="54" y="146" width="42" height="3" rx="1.5" />
+            <rect x="54" y="180" width="58" height="3" rx="1.5" />
+            <rect x="54" y="188" width="42" height="3" rx="1.5" />
+            <rect x="54" y="222" width="58" height="3" rx="1.5" />
+            <rect x="54" y="230" width="42" height="3" rx="1.5" />
+          </g>
+          <text x="74" y="288" text-anchor="middle" font-size="13" font-weight="700" fill="#00FF66" font-family="Segoe UI, Tahoma, sans-serif">خادم</text>
+        </g>
+
+        <!-- قاعدة البيانات -->
+        <g class="float-fast">
+          <ellipse cx="556" cy="128" rx="42" ry="15" fill="#0a0a0a" stroke="#00FF66" stroke-opacity="0.55" stroke-width="1.8" />
+          <path d="M514 128 v44 c0 8.3 18.8 15 42 15 s42-6.7 42-15 v-44" fill="#050505" stroke="#00FF66" stroke-opacity="0.55" stroke-width="1.8" />
+          <ellipse cx="556" cy="172" rx="42" ry="15" fill="none" stroke="#00FF66" stroke-opacity="0.4" stroke-width="1.6" />
+          <ellipse cx="556" cy="150" rx="42" ry="15" fill="none" stroke="#00FF66" stroke-opacity="0.35" stroke-width="1.4" />
+          <path d="M514 150 v22 c0 8.3 18.8 15 42 15 s42-6.7 42-15 v-22" fill="none" stroke="#00FF66" stroke-opacity="0.25" stroke-width="1.2" />
+          <text x="556" y="212" text-anchor="middle" font-size="13" font-weight="700" fill="#00FF66" font-family="Segoe UI, Tahoma, sans-serif">قاعدة بيانات</text>
+        </g>
+
+        <!-- رموز برمجية طائرة -->
+        <g fill="#00FF66" font-family="Consolas, 'Courier New', monospace" font-size="26" font-weight="700" filter="url(#hGlow)" direction="ltr">
+          <text class="float-slow" x="96" y="62" text-anchor="middle">&lt;/&gt;</text>
+          <text class="float-mid" x="196" y="42" text-anchor="middle">{ }</text>
+          <text class="float-fast" x="404" y="52" text-anchor="middle">#</text>
+          <text class="float-mid" x="500" y="86" text-anchor="middle">( )</text>
+          <text class="float-slow" x="60" y="360" text-anchor="middle">;</text>
+          <text class="float-fast" x="560" y="300" text-anchor="middle">=</text>
+          <text class="float-mid" x="250" y="404" text-anchor="middle">SELECT</text>
+          <text class="float-slow" x="370" y="382" text-anchor="middle">fn()</text>
+        </g>
+
+        <!-- عقد بيانات صغيرة -->
+        <g fill="#00FF66">
+          <circle class="pulse-soft" cx="470" cy="250" r="6" />
+          <circle class="pulse-soft" cx="536" cy="336" r="5" style="animation-delay:.6s" />
+          <circle class="pulse-soft" cx="300" cy="404" r="5" style="animation-delay:1.2s" />
+        </g>
+      </svg>
+    </div>
+    <p class="art-caption">حاسوب • خادم • قاعدة بيانات • اتصال مباشر بالبيانات</p>
+  </div>
+</section>
+
+<!-- ===================== ما هو تطبيق الويب ===================== -->
+<section class="section" id="intro">
+  <div class="section-head reveal">
+    <span class="eyebrow">المستوى الأول • المفاهيم الأساسية</span>
+    <h2 class="section-title">ما هو <span class="accent">تطبيق الويب؟</span></h2>
+    <p class="section-desc">
+      تطبيق الويب هو برنامج كامل يعمل من خلال المتصفح، وينفذ مهامًا حقيقية مثل البحث والشراء والتسجيل، وليس مجرد صفحات للقراءة فقط.
+    </p>
+    <div class="divider" aria-hidden="true"></div>
+  </div>
+
+  <div class="grid grid-3">
+    <article class="card reveal">
+      <div class="card-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#00FF66" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="2" y="4" width="20" height="15" rx="2" />
+          <path d="M8 21h8M12 19v2" />
+          <path d="M2 9h20" />
+        </svg>
+      </div>
+      <h3>ما هو تطبيق الويب؟</h3>
+      <p>
+        تطبيق الويب هو برنامج يعمل داخل <span class="hl">المتصفح</span> مثل Chrome أو Edge، وتستطيع استخدامه من أي جهاز متصل بالإنترنت بدون تثبيت على الجهاز.
+      </p>
+      <p>أمثلته: المتجر الإلكتروني، البريد الإلكتروني، منصات التعلم، والمواقع البنكية.</p>
+    </article>
+
+    <article class="card reveal d1">
+      <div class="card-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#00FF66" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 12h4l3-7 4 14 3-7h4" />
+        </svg>
+      </div>
+      <h3>كيف يعمل تطبيق الويب؟</h3>
+      <p>
+        عندما تفتح التطبيق أو تضغط زرًا، يرسل المتصفح <span class="hl">طلبًا</span> إلى الخادم، ويعالجه الخادم، ثم يعيد النتيجة إليك لتظهر على الشاشة.
+      </p>
+      <p>هذه العملية تحدث في أجزاء من الثانية.</p>
+    </article>
+
+    <article class="card reveal d2">
+      <div class="card-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#00FF66" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M9 11V6a2 2 0 0 1 4 0v5" />
+          <path d="M13 11V9a2 2 0 0 1 4 0v6a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5v-3a2 2 0 0 1 4 0" />
+        </svg>
+      </div>
+      <h3>كيف يتفاعل المستخدم؟</h3>
+      <p>
+        يتفاعل المستخدم عبر <span class="hl">الضغط على الأزرار</span>، وكتابة كلمات البحث، وتعبئة النماذج، والتنقل بين الصفحات.
+      </p>
+      <p>كل ضغطة زر هي في الحقيقة طلب جديد يُرسل إلى التطبيق.</p>
+    </article>
+  </div>
+
+  <div class="grid grid-2" style="margin-top:clamp(16px,2.2vw,24px)">
+    <article class="card reveal">
+      <div class="scene">
+        <div class="art-wrap">
+          <svg viewBox="0 0 520 350" role="img" aria-label="مخطط توضيحي لطبقات تطبيق الويب: المتصفح ثم الخادم ثم قاعدة البيانات">
+            <defs>
+              <linearGradient id="iLayerA" x1="0" y1="0" x2="1" y2="0">
+                <stop offset="0%" stop-color="#0d1f14" />
+                <stop offset="100%" stop-color="#050505" />
+              </linearGradient>
+              <linearGradient id="iLayerB" x1="0" y1="0" x2="1" y2="0">
+                <stop offset="0%" stop-color="#101010" />
+                <stop offset="100%" stop-color="#050505" />
+              </linearGradient>
+              <linearGradient id="iNeon" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#00FF66" />
+                <stop offset="100%" stop-color="#00CC55" />
+              </linearGradient>
+              <filter id="iGlow" x="-60%" y="-60%" width="220%" height="220%">
+                <feGaussianBlur stdDeviation="5" result="b" />
+                <feMerge><feMergeNode in="b" /><feMergeNode in="SourceGraphic" /></feMerge>
+              </filter>
+            </defs>
+
+            <!-- الطبقة الأولى: المتصفح -->
+            <g class="float-slow">
+              <rect x="60" y="14" width="400" height="76" rx="16" fill="url(#iLayerA)" stroke="#00FF66" stroke-opacity="0.45" stroke-width="1.8" />
+              <rect x="76" y="30" width="120" height="44" rx="8" fill="#000000" stroke="#00FF66" stroke-opacity="0.3" stroke-width="1" />
+              <path d="M84 42h44M84 52h34M84 62h40" stroke="#00FF66" stroke-opacity="0.7" stroke-width="2.5" stroke-linecap="round" />
+              <rect x="210" y="32" width="150" height="9" rx="4.5" fill="#00FF66" opacity="0.85" filter="url(#iGlow)" />
+              <rect x="210" y="48" width="110" height="7" rx="3.5" fill="#ffffff" opacity="0.2" />
+              <rect x="210" y="60" width="70" height="16" rx="8" fill="url(#iNeon)" />
+              <text x="60" y="108" font-size="14" font-weight="800" fill="#00FF66" font-family="Segoe UI, Tahoma, sans-serif">الواجهة الأمامية • ما يراه المستخدم</text>
+            </g>
+
+            <g stroke="#00FF66" stroke-width="2.2" fill="none">
+              <path class="dash-flow" d="M150 96 L150 134" />
+              <path d="M144 128 l6 8 6-8" fill="#00FF66" stroke="none" />
+            </g>
+            <text x="320" y="120" font-size="12.5" fill="#B8B8B8" font-family="Segoe UI, Tahoma, sans-serif">طلب المستخدم</text>
+
+            <!-- الطبقة الثانية: الخادم -->
+            <g class="float-mid">
+              <rect x="60" y="140" width="400" height="76" rx="16" fill="url(#iLayerB)" stroke="#00FF66" stroke-opacity="0.4" stroke-width="1.8" />
+              <rect x="76" y="154" width="52" height="48" rx="8" fill="#000000" stroke="#00FF66" stroke-opacity="0.3" stroke-width="1" />
+              <g fill="#00FF66">
+                <circle class="led" cx="86" cy="166" r="3.4" />
+                <circle class="led led-2" cx="86" cy="178" r="3.4" />
+                <circle class="led led-3" cx="86" cy="190" r="3.4" />
+              </g>
+              <rect x="140" y="158" width="42" height="7" rx="3.5" fill="#00FF66" opacity="0.6" />
+              <rect x="140" y="170" width="42" height="7" rx="3.5" fill="#00FF66" opacity="0.4" />
+              <g transform="translate(200 152)">
+                <circle class="spin-slow" cx="24" cy="24" r="18" fill="none" stroke="#00FF66" stroke-width="3" stroke-opacity="0.75" stroke-dasharray="28 14" />
+                <circle cx="24" cy="24" r="6" fill="#00FF66" />
+              </g>
+              <rect x="256" y="158" width="180" height="9" rx="4.5" fill="#00FF66" opacity="0.8" />
+              <rect x="256" y="174" width="130" height="7" rx="3.5" fill="#ffffff" opacity="0.18" />
+              <text x="60" y="234" font-size="14" font-weight="800" fill="#00FF66" font-family="Segoe UI, Tahoma, sans-serif">الواجهة الخلفية • معالجة الطلبات</text>
+            </g>
+
+            <g stroke="#00FF66" stroke-width="2.2" fill="none">
+              <path class="dash-flow" d="M150 222 L150 260" />
+              <path d="M144 254 l6 8 6-8" fill="#00FF66" stroke="none" />
+            </g>
+            <text x="300" y="246" font-size="12.5" fill="#B8B8B8" font-family="Segoe UI, Tahoma, sans-serif">استعلام عن البيانات</text>
+
+            <!-- الطبقة الثالثة: قاعدة البيانات -->
+            <g class="float-fast">
+              <rect x="60" y="266" width="400" height="52" rx="16" fill="url(#iLayerA)" stroke="#00FF66" stroke-opacity="0.45" stroke-width="1.8" />
+              <g transform="translate(84 272)">
+                <ellipse cx="24" cy="8" rx="24" ry="8" fill="#050505" stroke="#00FF66" stroke-opacity="0.6" stroke-width="1.6" />
+                <path d="M0 8v22c0 4.4 10.8 8 24 8s24-3.6 24-8V8" fill="#050505" stroke="#00FF66" stroke-opacity="0.6" stroke-width="1.6" />
+                <ellipse cx="24" cy="19" rx="24" ry="8" fill="none" stroke="#00FF66" stroke-opacity="0.35" stroke-width="1.3" />
+              </g>
+              <rect x="150" y="280" width="180" height="9" rx="4.5" fill="#00FF66" opacity="0.8" />
+              <rect x="150" y="295" width="130" height="7" rx="3.5" fill="#ffffff" opacity="0.18" />
+              <text x="60" y="336" font-size="14" font-weight="800" fill="#00FF66" font-family="Segoe UI, Tahoma, sans-serif">قاعدة البيانات • حفظ المعلومات</text>
+            </g>
+          </svg>
+        </div>
+        <p class="art-caption">ثلاث طبقات تتعاون لإنجاز مهمة واحدة</p>
+      </div>
+    </article>
+
+    <div class="grid" style="grid-template-columns:1fr">
+      <article class="card reveal d1">
+        <span class="chip">مقارنة مهمة</span>
+        <h3>ما الفرق بين الموقع وتطبيق الويب؟</h3>
+        <ul class="list-check">
+          <li><b>الموقع (Website):</b> صفحات تعرض معلومات للقراءة، مثل موقع أخبار أو صفحة تعريفية بشركة.</li>
+          <li><b>تطبيق الويب (Web App):</b> برنامج ينفذ مهامًا، مثل إنشاء حساب، رفع ملف، إتمام شراء، أو حجز موعد.</li>
+          <li><b>القاعدة:</b> إذا كان بإمكانك إنجاز عمل حقيقي داخل الصفحة فهو تطبيق ويب.</li>
+        </ul>
+      </article>
+
+      <article class="card reveal d2">
+        <span class="chip">فكرة أساسية</span>
+        <h3>لماذا نحتاج طبقات مختلفة؟</h3>
+        <p>
+          لأن كل طبقة لها وظيفة محددة. الواجهة الأمامية تهتم بـ<span class="hl">الشكل والتفاعل</span>، والواجهة الخلفية تهتم بـ<span class="hl">القواعد والمنطق</span>،
+          وقاعدة البيانات تهتم بـ<span class="hl">حفظ المعلومات</span> وتوفيرها عند الحاجة.
+        </p>
+        <p>هذا التقسيم يجعل التطبيق أسرع وأكثر أمانًا وأسهل في التطوير والصيانة.</p>
+      </article>
+
+      <div class="note reveal d3">
+        <strong>مثال من الحياة:</strong> عندما يفتح شخص متجرًا إلكترونيًا ويبحث عن منتج، فإن عدة أجزاء من التطبيق تتعاون لإتمام العملية:
+        الواجهة الأمامية تستقبل كلمة البحث، والواجهة الخلفية تعالج الطلب، وقاعدة البيانات تبحث عن المنتجات المطابقة، ثم تعود النتيجة إلى المستخدم.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== الواجهة الأمامية ===================== -->
+<section class="section" id="frontend">
+  <div class="section-head reveal">
+    <span class="eyebrow">الطبقة الأولى</span>
+    <h2 class="section-title">الواجهة الأمامية <span class="accent">Frontend</span></h2>
+    <p class="section-desc">
+      هي كل ما يراه المستخدم ويتفاعل معه داخل المتصفح: الألوان، الأزرار، الصور، القوائم، والنماذج.
+    </p>
+    <div class="divider" aria-hidden="true"></div>
+  </div>
+
+  <div class="grid grid-2">
+    <article class="card reveal">
+      <span class="chip">التعريف</span>
+      <h3>ما هي الواجهة الأمامية؟</h3>
+      <p>
+        الواجهة الأمامية هي الجزء الذي يعمل على <span class="hl">جهاز المستخدم</span> داخل المتصفح، وهي المسؤولة عن عرض المحتوى وتنظيم العمل و استقبال التفاعل.
+      </p>
+      <p>عندما تضغط على زر «شراء» أو تكتب في خانة البحث، فأنت تتعامل مباشرة مع الواجهة الأمامية.</p>
+
+      <span class="chip" style="margin-top:10px">مسؤولياتها</span>
+      <ul class="list-check">
+        <li><b>العرض:</b> إظهار النصوص والصور والمنتجات بشكل منظم وجميل.</li>
+        <li><b>التنقل:</b> القوائم والروابط التي تنقل المستخدم بين الصفحات.</li>
+        <li><b>النماذج:</b> استقبال البيانات مثل الاسم وكلمة المرور وكلمات البحث.</li>
+        <li><b>التفاعل:</b> الاستجابة الفورية للضغط والكتابة والتمرير.</li>
+        <li><b>الإرسال:</b> إرسال طلب المستخدم إلى الواجهة الخلفية لمعالجته.</li>
+      </ul>
+    </article>
+
+    <article class="card reveal d1">
+      <div class="scene">
+        <div class="art-wrap">
+          <svg viewBox="0 0 560 380" role="img" aria-label="شاشة حاسوب تعرض واجهة موقع مرتبطة بعناصر HTML و CSS و JavaScript">
+            <defs>
+              <linearGradient id="fScreen" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#052a16" />
+                <stop offset="100%" stop-color="#000000" />
+              </linearGradient>
+              <linearGradient id="fNeon" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#00FF66" />
+                <stop offset="100%" stop-color="#00CC55" />
+              </linearGradient>
+              <linearGradient id="fChip" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#131313" />
+                <stop offset="100%" stop-color="#060606" />
+              </linearGradient>
+              <filter id="fGlow" x="-60%" y="-60%" width="220%" height="220%">
+                <feGaussianBlur stdDeviation="5" result="b" />
+                <feMerge><feMergeNode in="b" /><feMergeNode in="SourceGraphic" /></feMerge>
+              </filter>
+            </defs>
+
+            <!-- الشاشة -->
+            <g class="float-slow">
+              <ellipse cx="330" cy="330" rx="140" ry="14" fill="#00FF66" opacity="0.13" />
+              <rect x="150" y="26" width="360" height="272" rx="20" fill="#0b0b0b" stroke="#00FF66" stroke-opacity="0.5" stroke-width="2.2" />
+              <rect x="162" y="38" width="336" height="248" rx="12" fill="url(#fScreen)" stroke="#00FF66" stroke-opacity="0.25" stroke-width="1" />
+
+              <!-- شريط المتصفح -->
+              <rect x="172" y="52" width="316" height="20" rx="10" fill="#000000" stroke="#00FF66" stroke-opacity="0.3" stroke-width="1" />
+              <circle cx="186" cy="62" r="3.6" fill="#00FF66" />
+              <circle cx="198" cy="62" r="3.6" fill="#00FF66" opacity="0.55" />
+              <circle cx="210" cy="62" r="3.6" fill="#00FF66" opacity="0.3" />
+              <rect x="224" y="57" width="180" height="10" rx="5" fill="#00FF66" opacity="0.16" />
+
+              <!-- محتوى الموقع -->
+              <rect x="172" y="84" width="150" height="12" rx="6" fill="#00FF66" opacity="0.9" filter="url(#fGlow)" />
+              <rect x="172" y="104" width="230" height="8" rx="4" fill="#ffffff" opacity="0.2" />
+              <rect x="172" y="118" width="200" height="8" rx="4" fill="#ffffff" opacity="0.14" />
+              <rect x="172" y="138" width="96" height="26" rx="13" fill="url(#fNeon)" />
+              <rect x="278" y="138" width="72" height="26" rx="13" fill="none" stroke="#00FF66" stroke-opacity="0.6" stroke-width="1.4" />
+              <rect x="172" y="178" width="96" height="70" rx="9" fill="#00FF66" opacity="0.10" stroke="#00FF66" stroke-opacity="0.32" stroke-width="1" />
+              <rect x="276" y="178" width="96" height="70" rx="9" fill="#00FF66" opacity="0.10" stroke="#00FF66" stroke-opacity="0.32" stroke-width="1" />
+              <rect x="380" y="178" width="96" height="70" rx="9" fill="#00FF66" opacity="0.10" stroke="#00FF66" stroke-opacity="0.32" stroke-width="1" />
+              <rect x="172" y="256" width="304" height="20" rx="10" fill="#000000" stroke="#00FF66" stroke-opacity="0.28" stroke-width="1" />
+              <circle cx="186" cy="266" r="4" fill="#00FF66" class="pulse-soft" />
+              <rect x="198" y="262" width="120" height="8" rx="4" fill="#ffffff" opacity="0.14" />
+
+              <!-- القاعدة -->
+              <rect x="306" y="298" width="48" height="20" fill="#161616" />
+              <rect x="272" y="316" width="116" height="13" rx="6.5" fill="#161616" stroke="#00FF66" stroke-opacity="0.35" stroke-width="1" />
+            </g>
+
+            <!-- رقاقات التقنيات -->
+            <g class="float-mid">
+              <rect x="8" y="52" width="128" height="58" rx="14" fill="url(#fChip)" stroke="#00FF66" stroke-opacity="0.45" stroke-width="1.6" />
+              <text x="72" y="76" text-anchor="middle" font-size="17" font-weight="900" fill="#00FF66" font-family="Segoe UI, Tahoma, sans-serif" direction="ltr">HTML</text>
+              <text x="72" y="98" text-anchor="middle" font-size="12" fill="#B8B8B8" font-family="Segoe UI, Tahoma, sans-serif">هيكل الصفحة</text>
+            </g>
+            <g class="float-fast">
+              <rect x="8" y="140" width="128" height="58" rx="14" fill="url(#fChip)" stroke="#00FF66" stroke-opacity="0.45" stroke-width="1.6" />
+              <text x="72" y="164" text-anchor="middle" font-size="17" font-weight="900" fill="#00FF66" font-family="Segoe UI, Tahoma, sans-serif" direction="ltr">CSS</text>
+              <text x="72" y="186" text-anchor="middle" font-size="12" fill="#B8B8B8" font-family="Segoe UI, Tahoma, sans-serif">الشكل والألوان</text>
+            </g>
+            <g class="float-slow">
+              <rect x="8" y="228" width="128" height="58" rx="14" fill="url(#fChip)" stroke="#00FF66" stroke-opacity="0.45" stroke-width="1.6" />
+              <text x="72" y="252" text-anchor="middle" font-size="15" font-weight="900" fill="#00FF66" font-family="Segoe UI, Tahoma, sans-serif" direction="ltr">JavaScript</text>
+              <text x="72" y="274" text-anchor="middle" font-size="12" fill="#B8B8B8" font-family="Segoe UI, Tahoma, sans-serif">التفاعل والحركة</text>
+            </g>
+
+            <!-- خطوط الربط -->
+            <g fill="none" stroke="#00FF66" stroke-width="2" stroke-opacity="0.8">
+              <path class="dash-flow" d="M136 81 C170 81 176 90 176 100" />
+              <path class="dash-flow" d="M136 169 C168 169 176 160 176 150" />
+              <path class="dash-flow" d="M136 257 C170 257 176 250 176 240" />
+            </g>
+
+            <!-- رموز طائرة -->
+            <g fill="#00FF66" font-family="Consolas, monospace" font-size="20" font-weight="700" filter="url(#fGlow)" direction="ltr">
+              <text class="float-fast" x="516" y="70" text-anchor="middle">&lt;/&gt;</text>
+              <text class="float-mid" x="536" y="180" text-anchor="middle">{ }</text>
+              <text class="float-slow" x="500" y="290" text-anchor="middle">#</text>
+            </g>
+          </svg>
+        </div>
+        <p class="art-caption">HTML + CSS + JavaScript = صفحة ويب تفاعلية</p>
+      </div>
+    </article>
+  </div>
+
+  <div class="grid grid-3" style="margin-top:clamp(16px,2.2vw,24px)">
+    <article class="card reveal">
+      <div class="card-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#00FF66" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="m9 7-5 5 5 5" />
+          <path d="m15 7 5 5-5 5" />
+        </svg>
+      </div>
+      <h3>HTML • هيكل الصفحة</h3>
+      <p>HTML هي لغة بناء الصفحة، وتحدد أماكن العناوين والفقرات والصور والأزرار.</p>
+      <div class="note" style="direction:ltr; text-align:left; font-family:Consolas, monospace; font-size:13.5px">
+        &lt;h1&gt;مرحبًا بك&lt;/h1&gt;<br />
+        &lt;button&gt;اشترِ الآن&lt;/button&gt;
+      </div>
+    </article>
+
+    <article class="card reveal d1">
+      <div class="card-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#00FF66" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 3a9 9 0 1 0 0 18c1.7 0 2-1.3 1.6-2.2-.5-1.1.2-2.3 1.4-2.3H18a3 3 0 0 0 3-3c0-5-4-9.5-9-10.5z" />
+          <circle cx="8.5" cy="10.5" r="1.2" fill="#00FF66" />
+          <circle cx="12" cy="8" r="1.2" fill="#00FF66" />
+          <circle cx="15.5" cy="10.5" r="1.2" fill="#00FF66" />
+        </svg>
+      </div>
+      <h3>CSS • الشكل والألوان</h3>
+      <p>CSS مسؤولة عن المظهر: الألوان، الخطوط، المسافات، والتناسب بين العناصر.</p>
+      <div class="note" style="direction:ltr; text-align:left; font-family:Consolas, monospace; font-size:13.5px">
+        button {<br />
+        &nbsp;&nbsp;background: #00FF66;<br />
+        &nbsp;&nbsp;color: black;<br />
+        }
+      </div>
+    </article>
+
+    <article class="card reveal d2">
+      <div class="card-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#00FF66" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M13 2 4.5 13H11l-1 9 8.5-11H12l1-9z" />
+        </svg>
+      </div>
+      <h3>JavaScript • التفاعل</h3>
+      <p>JavaScript تجعل الصفحة حية: تتحقق من النماذج، تُظهر رسائل، وتتفاعل مع الضغط.</p>
+      <div class="note" style="direction:ltr; text-align:left; font-family:Consolas, monospace; font-size:13.5px">
+        button.onclick = () =&gt; {<br />
+        &nbsp;&nbsp;alert("تم الإرسال");<br />
+        };
+      </div>
+    </article>
+  </div>
+
+  <div class="note reveal" style="margin-top:clamp(16px,2.2vw,24px)">
+    <strong>مثال عملي:</strong> عند كتابة اسمك في نموذج التسجيل ثم الضغط على «إنشاء حساب»، تتحقق الواجهة الأمامية أولًا من أن الخانة غير فارغة،
+    ثم ترسل البيانات إلى الواجهة الخلفية لإنشاء الحساب فعليًا، وأخيرًا تعرض رسالة النجاح على الشاشة.
+  </div>
+</section>
+
+<!-- ===================== الواجهة الخلفية ===================== -->
+<section class="section" id="backend">
+  <div class="section-head reveal">
+    <span class="eyebrow">الطبقة الثانية</span>
+    <h2 class="section-title">الواجهة الخلفية <span class="accent">Backend</span></h2>
+    <p class="section-desc">
+      هي العقل المدبر للتطبيق، تعمل على الخادم بعيدًا عن عين المستخدم، وتعالج كل الطلبات وتطبق قواعد العمل.
+    </p>
+    <div class="divider" aria-hidden="true"></div>
+  </div>
+
+  <div class="grid grid-2">
+    <article class="card reveal">
+      <div class="scene">
+        <div class="art-wrap">
+          <svg viewBox="0 0 560 360" role="img" aria-label="خادم قوي يستقبل الطلبات ويعالجها ويتصل بقاعدة البيانات">
+            <defs>
+              <linearGradient id="bRack" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#181818" />
+                <stop offset="100%" stop-color="#050505" />
+              </linearGradient>
+              <linearGradient id="bNeon" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#00FF66" />
+                <stop offset="100%" stop-color="#00CC55" />
+              </linearGradient>
+              <radialGradient id="bHalo" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="#00FF66" stop-opacity="0.28" />
+                <stop offset="100%" stop-color="#00FF66" stop-opacity="0" />
+              </radialGradient>
+              <filter id="bGlow" x="-60%" y="-60%" width="220%" height="220%">
+                <feGaussianBlur stdDeviation="5" result="b" />
+                <feMerge><feMergeNode in="b" /><feMergeNode in="SourceGraphic" /></feMerge>
+              </filter>
+            </defs>
+
+            <ellipse cx="280" cy="180" rx="260" ry="160" fill="url(#bHalo)" />
+
+            <!-- المتصفح (مصدر الطلب) -->
+            <g class="float-slow">
+              <rect x="10" y="118" width="104" height="82" rx="12" fill="#0b0b0b" stroke="#00FF66" stroke-opacity="0.45" stroke-width="1.8" />
+              <rect x="20" y="130" width="84" height="14" rx="7" fill="#000000" stroke="#00FF66" stroke-opacity="0.3" stroke-width="1" />
+              <circle cx="29" cy="137" r="3" fill="#00FF66" />
+              <circle cx="39" cy="137" r="3" fill="#00FF66" opacity="0.5" />
+              <rect x="20" y="152" width="56" height="7" rx="3.5" fill="#00FF66" opacity="0.7" />
+              <rect x="20" y="164" width="40" height="7" rx="3.5" fill="#ffffff" opacity="0.18" />
+              <rect x="20" y="178" width="48" height="14" rx="7" fill="url(#bNeon)" />
+              <text x="62" y="222" text-anchor="middle" font-size="13" font-weight="800" fill="#00FF66" font-family="Segoe UI, Tahoma, sans-serif">متصفح المستخدم</text>
+            </g>
+
+            <!-- الطلب الوارد -->
+            <g fill="none" stroke="#00FF66" stroke-width="2.4">
+              <path class="dash-flow" d="M118 160 H172" />
+              <path d="M166 154 l8 6 -8 6" fill="#00FF66" stroke="none" />
+            </g>
+            <text x="145" y="146" text-anchor="middle" font-size="12" fill="#B8B8B8" font-family="Segoe UI, Tahoma, sans-serif">طلب وارد</text>
+
+            <!-- الخادم -->
+            <g class="float-mid">
+              <rect x="176" y="52" width="150" height="230" rx="18" fill="url(#bRack)" stroke="#00FF66" stroke-opacity="0.55" stroke-width="2.2" />
+              <rect x="188" y="66" width="126" height="46" rx="9" fill="#000000" stroke="#00FF66" stroke-opacity="0.32" stroke-width="1" />
+              <rect x="188" y="120" width="126" height="46" rx="9" fill="#000000" stroke="#00FF66" stroke-opacity="0.32" stroke-width="1" />
+              <rect x="188" y="174" width="126" height="46" rx="9" fill="#000000" stroke="#00FF66" stroke-opacity="0.32" stroke-width="1" />
+              <rect x="188" y="228" width="126" height="38" rx="9" fill="#000000" stroke="#00FF66" stroke-opacity="0.32" stroke-width="1" />
+
+              <g fill="#00FF66">
+                <circle class="led" cx="200" cy="78" r="4" filter="url(#bGlow)" />
+                <circle class="led led-2" cx="200" cy="132" r="4" filter="url(#bGlow)" />
+                <circle class="led led-3" cx="200" cy="186" r="4" filter="url(#bGlow)" />
+                <circle class="led led-4" cx="200" cy="240" r="4" filter="url(#bGlow)" />
+              </g>
+              <g fill="#00FF66" opacity="0.32">
+                <rect x="214" y="74" width="90" height="3" rx="1.5" />
+                <rect x="214" y="82" width="66" height="3" rx="1.5" />
+                <rect x="214" y="128" width="90" height="3" rx="1.5" />
+                <rect x="214" y="136" width="66" height="3" rx="1.5" />
+                <rect x="214" y="182" width="90" height="3" rx="1.5" />
+                <rect x="214" y="190" width="66" height="3" rx="1.5" />
+                <rect x="214" y="236" width="90" height="3" rx="1.5" />
+                <rect x="214" y="244" width="52" height="3" rx="1.5" />
+              </g>
+
+              <!-- تروس المعالجة -->
+              <g transform="translate(232 96)">
+                <circle class="spin-slow" cx="18" cy="18" r="15" fill="none" stroke="#00FF66" stroke-width="4" stroke-opacity="0.8" stroke-dasharray="20 10" />
+                <circle cx="18" cy="18" r="5" fill="#00FF66" />
+              </g>
+              <g transform="translate(262 96)">
+                <circle class="spin-slow" cx="14" cy="14" r="11" fill="none" stroke="#00FF66" stroke-width="3" stroke-opacity="0.6" stroke-dasharray="14 8" style="animation-direction:reverse" />
+              </g>
+              <rect x="214" y="206" width="90" height="10" rx="5" fill="#00FF66" opacity="0.75" filter="url(#bGlow)" />
+              <text x="251" y="300" text-anchor="middle" font-size="14" font-weight="800" fill="#00FF66" font-family="Segoe UI, Tahoma, sans-serif">الخادم • معالجة الطلبات</text>
+            </g>
+
+            <!-- الاتصال الصادر إلى قاعدة البيانات -->
+            <g fill="none" stroke="#00FF66" stroke-width="2.4">
+              <path class="dash-flow" d="M330 160 H384" />
+              <path d="M378 154 l8 6 -8 6" fill="#00FF66" stroke="none" />
+            </g>
+            <text x="356" y="146" text-anchor="middle" font-size="12" fill="#B8B8B8" font-family="Segoe UI, Tahoma, sans-serif">استعلام</text>
+
+            <!-- قاعدة البيانات -->
+            <g class="float-fast">
+              <g transform="translate(388 100)">
+                <ellipse cx="70" cy="20" rx="66" ry="22" fill="#0a0a0a" stroke="#00FF66" stroke-opacity="0.55" stroke-width="2" />
+                <path d="M4 20v52c0 12.2 29.6 22 66 22s66-9.8 66-22V20" fill="#050505" stroke="#00FF66" stroke-opacity="0.55" stroke-width="2" />
+                <ellipse cx="70" cy="46" rx="66" ry="22" fill="none" stroke="#00FF66" stroke-opacity="0.4" stroke-width="1.5" />
+                <ellipse cx="70" cy="70" rx="66" ry="22" fill="none" stroke="#00FF66" stroke-opacity="0.25" stroke-width="1.3" />
+              </g>
+              <text x="458" y="222" text-anchor="middle" font-size="13" font-weight="800" fill="#00FF66" font-family="Segoe UI, Tahoma, sans-serif">قاعدة البيانات</text>
+            </g>
+
+            <!-- رموز المعالجة -->
+            <g fill="#00FF66" font-family="Consolas, monospace" font-size="17" font-weight="700" filter="url(#bGlow)" direction="ltr">
+              <text class="float-slow" x="70" y="70" text-anchor="middle">if()</text>
+              <text class="float-mid" x="500" y="60" text-anchor="middle">API</text>
+              <text class="float-fast" x="520" y="300" text-anchor="middle">{ }</text>
+              <text class="float-slow" x="60" y="300" text-anchor="middle">200</text>
+            </g>
+          </svg>
+        </div>
+        <p class="art-caption">الخادم يستقبل الطلب • يعالجه • يسأل قاعدة البيانات • يعيد النتيجة</p>
+      </div>
+    </article>
+
+    <div class="grid" style="grid-template-columns:1fr">
+      <article class="card reveal d1">
+        <span class="chip">التعريف</span>
+        <h3>ما هي الواجهة الخلفية؟</h3>
+        <p>
+          الواجهة الخلفية هي البرنامج الذي يعمل على <span class="hl">الخادم (Server)</span>، ولا يراه المستخدم، لكنه ينفذ كل الأعمال المهمة:
+          يستقبل الطلبات، يتحقق من صلاحيات المستخدم، يطبق قواعد التطبيق، ثم يعيد النتيجة.
+        </p>
+      </article>
+
+      <article class="card reveal d2">
+        <span class="chip">ماذا تفعل بالتفصيل؟</span>
+        <ul class="list-check">
+          <li><b>استقبال الطلبات:</b> يصل الطلب من المتصفح عبر العنوان (URL) بطريقة تسمى HTTP.</li>
+          <li><b>معالجة المعلومات:</b> تتحقق من البيانات وتطبق قواعد العمل مثل «لا يمكن الشراء بمخزون صفر».</li>
+          <li><b>التواصل مع قاعدة البيانات:</b> تسأل عن المنتجات أو تحفظ طلبًا جديدًا.</li>
+          <li><b>إعادة النتيجة:</b> ترسل النتيجة إلى الواجهة الأمامية لعرضها على المستخدم.</li>
+        </ul>
+      </article>
+
+      <article class="card reveal d3">
+        <span class="chip">عند إرسال نموذج</span>
+        <h3>ماذا يحدث عندما يرسل المستخدم نموذجًا؟</h3>
+        <p>
+          يكتب المستخدم بريده وكلمة المرور ويضغط «تسجيل الدخول»، فتنتقل البيانات إلى الواجهة الخلفية، فتتحقق من صحة البيانات ومن وجود الحساب،
+          ثم ترد إما برسالة نجاح أو برسالة خطأ. هذا كله يحدث على الخادم وليس في المتصفح.
+        </p>
+      </article>
+    </div>
+  </div>
+
+  <div class="grid grid-3" style="margin-top:clamp(16px,2.2vw,24px)">
+    <article class="card reveal">
+      <div class="card-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#00FF66" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 2 3 7v10l9 5 9-5V7z" />
+          <path d="M12 22V12M3 7l9 5 9-5" />
+        </svg>
+      </div>
+      <h3>Node.js</h3>
+      <p>بيئة تشغيل تسمح باستخدام JavaScript في الخادم، وهي سريعة ومناسبة للتطبيقات التي تحتاج تفاعلًا فوريًا.</p>
+      <span class="chip">JavaScript على الخادم</span>
+    </article>
+
+    <article class="card reveal d1">
+      <div class="card-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#00FF66" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <ellipse cx="12" cy="6" rx="8" ry="3" />
+          <path d="M4 6v6c0 1.7 3.6 3 8 3s8-1.3 8-3V6" />
+          <path d="M4 12v6c0 1.7 3.6 3 8 3s8-1.3 8-3v-6" />
+        </svg>
+      </div>
+      <h3>PHP</h3>
+      <p>لغة شهيرة ومستخدمة في ملايين المواقع، سهلة التعلم وتعمل بشكل ممتاز مع قواعد البيانات والصفحات الديناميكية.</p>
+      <span class="chip">لغة كلاسيكية للمواقع</span>
+    </article>
+
+    <article class="card reveal d2">
+      <div class="card-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#00FF66" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="9" />
+          <path d="M8 8.5c1.5-2 4.5-2 6 0M8.5 13c1 1.6 3 1.9 4.6.8" />
+        </svg>
+      </div>
+      <h3>Python</h3>
+      <p>لغة قوية وواضحة، تُستخدم كثيرًا في تطبيقات الويب والذكاء الاصطناعي وتحليل البيانات عبر أطر مثل Django و Flask.</p>
+      <span class="chip">قوة ومرونة عالية</span>
+    </article>
+  </div>
+</section>
+
+<!-- ===================== قاعدة البيانات ===================== -->
+<section class="section" id="database">
+  <div class="section-head reveal">
+    <span class="eyebrow">الطبقة الثالثة</span>
+    <h2 class="section-title">قاعدة البيانات <span class="accent">Database</span></h2>
+    <p class="section-desc">
+      هي مكان حفظ المعلومات بشكل منظم، حتى يسهل الوصول إليها وتحديثها في أي وقت.
+    </p>
+    <div class="divider" aria-hidden="true"></div>
+  </div>
+
+  <div class="grid grid-2">
+    <article class="card reveal">
+      <span class="chip">التعريف</span>
+      <h3>ما هي قاعدة البيانات؟</h3>
+      <p>
+        قاعدة البيانات هي <span class="hl">مخزن المعلومات</span> الخاص بالتطبيق. كل منتج وكل مستخدم وكل طلب شراء يُحفظ فيها كسجل منظم،
+        ويمكن البحث عنه أو تعديله أو حذفه في أي وقت.
+      </p>
+      <p>
+        قاعدة البيانات لا تعرض البيانات للمستخدم بنفسها، بل تحفظها وتعيدها عندما تطلبها الواجهة الخلفية.
+      </p>
+
+      <span class="chip" style="margin-top:10px">لماذا تحتاجها المواقع؟</span>
+      <ul class="list-check">
+        <li>حتى لا تختفي المعلومات عند إغلاق المتصفح.</li>
+        <li>حتى يجد المستخدم بياناته في كل مرة يفتح فيها التطبيق.</li>
+        <li>حتى يتمكن آلاف المستخدمين من استخدام نفس التطبيق في نفس الوقت.</li>
+        <li>لتنظيم كميات ضخمة من المعلومات والبحث فيها بسرعة.</li>
+      </ul>
+    </article>
+
+    <article class="card reveal d1">
+      <div class="scene">
+        <div class="art-wrap">
+          <svg viewBox="0 0 560 350" role="img" aria-label="مستودعات قاعدة البيانات مع سجلات معلومات ومسارات بيانات مضيئة">
+            <defs>
+              <linearGradient id="dCyl" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#0e0e0e" />
+                <stop offset="100%" stop-color="#030303" />
+              </linearGradient>
+              <linearGradient id="dNeon" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#00FF66" />
+                <stop offset="100%" stop-color="#00CC55" />
+              </linearGradient>
+              <radialGradient id="dHalo" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="#00FF66" stop-opacity="0.24" />
+                <stop offset="100%" stop-color="#00FF66" stop-opacity="0" />
+              </radialGradient>
+              <filter id="dGlow" x="-60%" y="-60%" width="220%" height="220%">
+                <feGaussianBlur stdDeviation="5" result="b" />
+                <feMerge><feMergeNode in="b" /><feMergeNode in="SourceGraphic" /></feMerge>
+              </filter>
+            </defs>
+
+            <ellipse cx="280" cy="175" rx="265" ry="150" fill="url(#dHalo)" />
+
+            <!-- أسطوانة 1: المنتجات -->
+            <g class="float-slow">
+              <g transform="translate(28 70)">
+                <ellipse cx="90" cy="24" rx="90" ry="24" fill="#050505" stroke="#00FF66" stroke-opacity="0.6" stroke-width="2.2" />
+                <path d="M0 24v78c0 13.3 40.3 24 90 24s90-10.7 90-24V24" fill="url(#dCyl)" stroke="#00FF66" stroke-opacity="0.6" stroke-width="2.2" />
+                <ellipse cx="90" cy="60" rx="90" ry="24" fill="none" stroke="#00FF66" stroke-opacity="0.4" stroke-width="1.5" />
+                <ellipse cx="90" cy="96" rx="90" ry="24" fill="none" stroke="#00FF66" stroke-opacity="0.22" stroke-width="1.2" />
+              </g>
+              <text x="118" y="216" text-anchor="middle" font-size="15" font-weight="800" fill="#00FF66" font-family="Segoe UI, Tahoma, sans-serif">المنتجات</text>
+              <g fill="#00FF66" opacity="0.75">
+                <rect x="48" y="132" width="120" height="6" rx="3" />
+                <rect x="48" y="146" width="90" height="6" rx="3" opacity="0.6" />
+              </g>
+            </g>
+
+            <!-- أسطوانة 2: المستخدمون -->
+            <g class="float-mid">
+              <g transform="translate(206 40)">
+                <ellipse cx="74" cy="20" rx="74" ry="20" fill="#050505" stroke="#00FF66" stroke-opacity="0.55" stroke-width="2" />
+                <path d="M0 20v64c0 11 33.2 20 74 20s74-9 74-20V20" fill="url(#dCyl)" stroke="#00FF66" stroke-opacity="0.55" stroke-width="2" />
+                <ellipse cx="74" cy="50" rx="74" ry="20" fill="none" stroke="#00FF66" stroke-opacity="0.35" stroke-width="1.4" />
+              </g>
+              <text x="280" y="180" text-anchor="middle" font-size="15" font-weight="800" fill="#00FF66" font-family="Segoe UI, Tahoma, sans-serif">المستخدمون</text>
+              <g fill="#00FF66" opacity="0.7">
+                <rect x="222" y="96" width="112" height="6" rx="3" />
+                <rect x="222" y="110" width="82" height="6" rx="3" opacity="0.55" />
+              </g>
+            </g>
+
+            <!-- أسطوانة 3: الطلبات -->
+            <g class="float-fast">
+              <g transform="translate(392 84)">
+                <ellipse cx="80" cy="22" rx="80" ry="22" fill="#050505" stroke="#00FF66" stroke-opacity="0.55" stroke-width="2" />
+                <path d="M0 22v70c0 12.2 35.9 22 80 22s80-9.8 80-22V22" fill="url(#dCyl)" stroke="#00FF66" stroke-opacity="0.55" stroke-width="2" />
+                <ellipse cx="80" cy="54" rx="80" ry="22" fill="none" stroke="#00FF66" stroke-opacity="0.32" stroke-width="1.4" />
+              </g>
+              <text x="472" y="228" text-anchor="middle" font-size="15" font-weight="800" fill="#00FF66" font-family="Segoe UI, Tahoma, sans-serif">الطلبات</text>
+              <g fill="#00FF66" opacity="0.7">
+                <rect x="408" y="146" width="116" height="6" rx="3" />
+                <rect x="408" y="160" width="86" height="6" rx="3" opacity="0.55" />
+              </g>
+            </g>
+
+            <!-- مسارات البيانات بين الأسطوانات -->
+            <g fill="none" stroke="#00FF66" stroke-width="2.2" opacity="0.85">
+              <path class="dash-flow" d="M148 150 H204" />
+              <path class="dash-flow" d="M358 130 H390" />
+              <path class="dash-flow" d="M472 260 C472 300 420 312 340 306" />
+            </g>
+
+            <!-- سجلات متصلة -->
+            <g>
+              <rect x="150" y="272" width="260" height="42" rx="12" fill="#050505" stroke="#00FF66" stroke-opacity="0.45" stroke-width="1.6" />
+              <circle cx="172" cy="293" r="7" fill="url(#dNeon)" />
+              <rect x="190" y="286" width="150" height="7" rx="3.5" fill="#00FF66" opacity="0.7" />
+              <rect x="190" y="299" width="100" height="5" rx="2.5" fill="#ffffff" opacity="0.16" />
+              <text x="150" y="336" font-size="12.5" fill="#B8B8B8" font-family="Segoe UI, Tahoma, sans-serif">سجل واحد = منتج أو مستخدم أو طلب</text>
+            </g>
+
+            <!-- رموز -->
+            <g fill="#00FF66" font-family="Consolas, monospace" font-size="16" font-weight="700" filter="url(#dGlow)" direction="ltr">
+              <text class="float-slow" x="52" y="46" text-anchor="middle">SELECT</text>
+              <text class="float-mid" x="530" y="46" text-anchor="middle">INSERT</text>
+              <text class="float-fast" x="300" y="24" text-anchor="middle">WHERE</text>
+            </g>
+          </svg>
+        </div>
+        <p class="art-caption">أسطوانات تخزين + سجلات منظمة + مسارات بيانات مضيئة</p>
+      </div>
+    </article>
+  </div>
+
+  <div class="grid grid-3" style="margin-top:clamp(16px,2.2vw,24px)">
+    <article class="card reveal">
+      <div class="card-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#00FF66" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 7h18M3 12h18M3 17h18" />
+          <circle cx="7" cy="7" r="1.6" fill="#00FF66" />
+          <circle cx="13" cy="12" r="1.6" fill="#00FF66" />
+          <circle cx="9" cy="17" r="1.6" fill="#00FF66" />
+        </svg>
+      </div>
+      <h3>ماذا تُخزَّن؟</h3>
+      <ul class="list-check">
+        <li><b>معلومات المنتجات:</b> الاسم، السعر، الصورة، الكمية.</li>
+        <li><b>حسابات المستخدمين:</b> الاسم، البريد، كلمة المرور المشفّرة.</li>
+        <li><b>سجل الطلبات:</b> ماذا اشترى المستخدم ومتى وكم دفع.</li>
+      </ul>
+    </article>
+
+    <article class="card reveal d1">
+      <div class="card-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#00FF66" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="7" />
+          <path d="m20 20-3.5-3.5" />
+        </svg>
+      </div>
+      <h3>كيف تُستَرجَع المعلومات؟</h3>
+      <p>
+        ترسل الواجهة الخلفية <span class="hl">استعلامًا</span> مثل: «أعطني كل المنتجات التي تحتوي على كلمة هاتف»،
+        فتبحث قاعدة البيانات في سجلاتها وتعيد النتائج فقط.
+      </p>
+      <div class="note" style="direction:ltr; text-align:left; font-family:Consolas, monospace; font-size:13px">
+        SELECT * FROM products<br />WHERE name LIKE '%phone%'
+      </div>
+    </article>
+
+    <article class="card reveal d2">
+      <div class="card-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#00FF66" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M4 6h16v12H4z" />
+          <path d="M4 10h16M9 14h6" />
+        </svg>
+      </div>
+      <h3>الحفظ مقابل العرض</h3>
+      <p>
+        <span class="hl">الحفظ</span> يحدث في قاعدة البيانات: تُكتب المعلومة مرة واحدة وتبقى موجودة.
+      </p>
+      <p>
+        <span class="hl">العرض</span> يحدث في الواجهة الأمامية: تُقرأ المعلومة من قاعدة البيانات وتُعرض بشكل جميل على الشاشة.
+      </p>
+      <p>بمعنى آخر: قاعدة البيانات تعرف المعلومات، والواجهة الأمامية تُظهرها.</p>
+    </article>
+  </div>
+
+  <div class="note reveal" style="margin-top:clamp(16px,2.2vw,24px)">
+    <strong>تخيّل الأمر هكذا:</strong> قاعدة البيانات مثل مكتبة ضخمة جدًا. المكتبة لا تتحدث مع الزائر مباشرة،
+    بل يطلب «أمين المكتبة» (الواجهة الخلفية) كتابًا محددًا، فيجلبه له من الرفوف.
+  </div>
+</section>
+
+<!-- ===================== كيف تتعاون الطبقات الثلاثة (تدفق البيانات) ===================== -->
+<section class="section" id="flow">
+  <div class="section-head reveal">
+    <span class="eyebrow">القسم الأهم • تجربة تفاعلية</span>
+    <h2 class="section-title">كيف تتعاون <span class="accent">الطبقات الثلاثة؟</span></h2>
+    <p class="section-desc">
+      مثال عملي: مستخدم يبحث عن منتج في متجر إلكتروني. شاهد الرحلة الكاملة للبيانات بين الواجهة الأمامية والواجهة الخلفية وقاعدة البيانات.
+    </p>
+    <div class="divider" aria-hidden="true"></div>
+  </div>
+
+  <div class="flow-panel reveal">
+    <div class="flow-stage" id="flowStage">
+
+      <!-- العقدة 1: الواجهة الأمامية -->
+      <div class="node" id="nodeFrontend">
+        <span class="node-tag">المتصفح</span>
+        <div class="node-art" aria-hidden="true">
+          <svg viewBox="0 0 150 96">
+            <defs>
+              <linearGradient id="n1Screen" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#052a16" />
+                <stop offset="100%" stop-color="#000000" />
+              </linearGradient>
+              <linearGradient id="n1Neon" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#00FF66" />
+                <stop offset="100%" stop-color="#00CC55" />
+              </linearGradient>
+            </defs>
+            <rect x="16" y="8" width="118" height="72" rx="9" fill="#0b0b0b" stroke="#00FF66" stroke-opacity="0.55" stroke-width="2" />
+            <rect x="23" y="15" width="104" height="58" rx="5" fill="url(#n1Screen)" stroke="#00FF66" stroke-opacity="0.22" stroke-width="1" />
+            <rect x="29" y="21" width="60" height="6" rx="3" fill="#00FF66" opacity="0.85" />
+            <rect x="29" y="32" width="44" height="4" rx="2" fill="#ffffff" opacity="0.2" />
+            <rect x="29" y="42" width="38" height="11" rx="5.5" fill="url(#n1Neon)" />
+            <rect x="29" y="58" width="30" height="12" rx="3" fill="#00FF66" opacity="0.14" stroke="#00FF66" stroke-opacity="0.3" stroke-width="0.8" />
+            <rect x="63" y="58" width="30" height="12" rx="3" fill="#00FF66" opacity="0.14" stroke="#00FF66" stroke-opacity="0.3" stroke-width="0.8" />
+            <rect x="97" y="58" width="24" height="12" rx="3" fill="#00FF66" opacity="0.14" stroke="#00FF66" stroke-opacity="0.3" stroke-width="0.8" />
+            <rect x="62" y="80" width="26" height="6" fill="#161616" />
+            <rect x="48" y="86" width="54" height="6" rx="3" fill="#161616" stroke="#00FF66" stroke-opacity="0.3" stroke-width="0.8" />
+          </svg>
+        </div>
+        <h3>الواجهة الأمامية</h3>
+        <p class="node-sub">Frontend</p>
+        <p class="node-status" id="statusFrontend">بانتظار البحث</p>
+        <div class="mini-screen">
+          <div class="mini-bar" aria-hidden="true">
+            <span class="mini-dot"></span><span class="mini-dot"></span><span class="mini-dot"></span>
+            <span class="mini-url">shop.example.com/search</span>
+          </div>
+          <div class="mini-search" id="miniSearch">
+            <span aria-hidden="true">🔎</span>
+            <span id="miniQuery">اكتب كلمة البحث…</span>
+            <span class="cursor" aria-hidden="true"></span>
+          </div>
+          <div class="mini-results" id="miniResults">
+            <div class="mini-empty" id="miniEmpty">لا توجد نتائج بعد</div>
+            <div class="mini-result"><span class="mini-thumb" aria-hidden="true"></span><span>هاتف ذكي</span></div>
+            <div class="mini-result"><span class="mini-thumb" aria-hidden="true"></span><span>سماعة لاسلكية</span></div>
+            <div class="mini-result"><span class="mini-thumb" aria-hidden="true"></span><span>شاحن سريع</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- الموصل 1 -->
+      <div class="connector" id="conn1">
+        <span class="conn-tag" id="conn1Tag">طلب البحث</span>
+        <div class="conn-track" aria-hidden="true"><span class="packet"></span></div>
+      </div>
+
+      <!-- العقدة 2: الواجهة الخلفية -->
+      <div class="node" id="nodeBackend">
+        <span class="node-tag">الخادم</span>
+        <div class="node-art" aria-hidden="true">
+          <svg viewBox="0 0 150 96">
+            <defs>
+              <linearGradient id="n2Neon" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#00FF66" />
+                <stop offset="100%" stop-color="#00CC55" />
+              </linearGradient>
+            </defs>
+            <rect x="30" y="6" width="90" height="80" rx="10" fill="#0e0e0e" stroke="#00FF66" stroke-opacity="0.55" stroke-width="2" />
+            <rect x="38" y="14" width="74" height="16" rx="4" fill="#000000" stroke="#00FF66" stroke-opacity="0.3" stroke-width="0.9" />
+            <rect x="38" y="34" width="74" height="16" rx="4" fill="#000000" stroke="#00FF66" stroke-opacity="0.3" stroke-width="0.9" />
+            <rect x="38" y="54" width="74" height="16" rx="4" fill="#000000" stroke="#00FF66" stroke-opacity="0.3" stroke-width="0.9" />
+            <g fill="#00FF66">
+              <circle class="led" cx="44" cy="22" r="2.8" />
+              <circle class="led led-2" cx="44" cy="42" r="2.8" />
+              <circle class="led led-3" cx="44" cy="62" r="2.8" />
+            </g>
+            <g fill="#00FF66" opacity="0.3">
+              <rect x="52" y="20" width="52" height="3" rx="1.5" />
+              <rect x="52" y="40" width="52" height="3" rx="1.5" />
+              <rect x="52" y="60" width="52" height="3" rx="1.5" />
+            </g>
+            <g transform="translate(58 66)">
+              <circle class="spin-slow" cx="14" cy="14" r="11" fill="none" stroke="#00FF66" stroke-width="3" stroke-opacity="0.85" stroke-dasharray="16 8" />
+              <circle cx="14" cy="14" r="4" fill="url(#n2Neon)" />
+            </g>
+          </svg>
+        </div>
+        <h3>الواجهة الخلفية</h3>
+        <p class="node-sub">Backend</p>
+        <p class="node-status" id="statusBackend">جاهز</p>
+      </div>
+
+      <!-- الموصل 2 -->
+      <div class="connector" id="conn2">
+        <span class="conn-tag" id="conn2Tag">استعلام</span>
+        <div class="conn-track" aria-hidden="true"><span class="packet"></span></div>
+      </div>
+
+      <!-- العقدة 3: قاعدة البيانات -->
+      <div class="node" id="nodeDatabase">
+        <span class="node-tag">التخزين</span>
+        <div class="node-art" aria-hidden="true">
+          <svg viewBox="0 0 150 96">
+            <defs>
+              <linearGradient id="n3Cyl" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#101010" />
+                <stop offset="100%" stop-color="#030303" />
+              </linearGradient>
+            </defs>
+            <g transform="translate(25 8)">
+              <ellipse cx="50" cy="14" rx="50" ry="14" fill="#050505" stroke="#00FF66" stroke-opacity="0.6" stroke-width="2" />
+              <path d="M0 14v40c0 7.7 22.4 14 50 14s50-6.3 50-14V14" fill="url(#n3Cyl)" stroke="#00FF66" stroke-opacity="0.6" stroke-width="2" />
+              <ellipse cx="50" cy="34" rx="50" ry="14" fill="none" stroke="#00FF66" stroke-opacity="0.4" stroke-width="1.4" />
+              <ellipse cx="50" cy="52" rx="50" ry="14" fill="none" stroke="#00FF66" stroke-opacity="0.25" stroke-width="1.2" />
+            </g>
+            <g fill="#00FF66" opacity="0.7">
+              <rect x="42" y="72" width="66" height="4" rx="2" />
+              <rect x="52" y="80" width="46" height="4" rx="2" opacity="0.5" />
+            </g>
+          </svg>
+        </div>
+        <h3>قاعدة البيانات</h3>
+        <p class="node-sub">Database</p>
+        <p class="node-status" id="statusDatabase">جاهزة</p>
+      </div>
+    </div>
+
+    <!-- شرح الخطوات والتحكم -->
+    <div class="flow-explain">
+      <div class="step-box" aria-live="polite">
+        <span class="step-count" id="stepCount">الخطوة 0 من 7</span>
+        <h3 class="step-title" id="stepTitle">الرحلة جاهزة للانطلاق</h3>
+        <p class="step-text" id="stepText">اضغط زر «شاهد تدفق البيانات» لترى كيف ينتقل طلب البحث بين الطبقات الثلاثة خطوة بخطوة.</p>
+        <p class="step-visual" id="stepVisual"></p>
+        <div class="step-dots" id="stepDots"></div>
+      </div>
+
+      <div class="flow-controls">
+        <button class="btn" id="flowPlay" type="button">شاهد تدفق البيانات</button>
+        <button class="btn btn-ghost btn-sm" id="flowPause" type="button" disabled>إيقاف مؤقت</button>
+        <button class="btn btn-ghost btn-sm" id="flowNext" type="button">الخطوة التالية</button>
+        <button class="btn btn-ghost btn-sm" id="flowReplay" type="button">إعادة التشغيل</button>
+        <p class="flow-hint">يمكنك الضغط على أي نقطة أسفل للانتقال مباشرة إلى تلك الخطوة.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== تطبيقات الويب الشهيرة ===================== -->
+<section class="section" id="apps">
+  <div class="section-head reveal">
+    <span class="eyebrow">أمثلة من الحياة</span>
+    <h2 class="section-title">تطبيقات <span class="accent">الويب</span> حولك</h2>
+    <p class="section-desc">
+      كل تطبيق تستخدمه يوميًا يعمل بالطبقات الثلاث نفسها. اضغط على أي بطاقة لتقرأ التفاصيل الكاملة.
+    </p>
+    <div class="divider" aria-hidden="true"></div>
+  </div>
+
+  <div class="app-grid">
+
+    <!-- 1) المتجر الإلكتروني -->
+    <div class="app-card reveal" role="button" tabindex="0" aria-expanded="false">
+      <div class="art-wrap">
+        <svg viewBox="0 0 320 150" role="img" aria-label="متجر إلكتروني بعربة شراء وعلب منتجات">
+          <defs>
+            <linearGradient id="a1n" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#00FF66" /><stop offset="100%" stop-color="#00CC55" />
+            </linearGradient>
+            <filter id="a1g" x="-60%" y="-60%" width="220%" height="220%">
+              <feGaussianBlur stdDeviation="4" result="b" /><feMerge><feMergeNode in="b" /><feMergeNode in="SourceGraphic" /></feMerge>
+            </filter>
+          </defs>
+          <rect x="14" y="20" width="120" height="86" rx="12" fill="#050505" stroke="#00FF66" stroke-opacity="0.45" stroke-width="1.8" />
+          <rect x="24" y="30" width="60" height="8" rx="4" fill="#00FF66" opacity="0.85" filter="url(#a1g)" />
+          <rect x="24" y="44" width="90" height="6" rx="3" fill="#ffffff" opacity="0.18" />
+          <rect x="24" y="56" width="70" height="6" rx="3" fill="#ffffff" opacity="0.14" />
+          <rect x="24" y="70" width="34" height="26" rx="6" fill="#00FF66" opacity="0.16" stroke="#00FF66" stroke-opacity="0.35" stroke-width="1" />
+          <rect x="64" y="70" width="34" height="26" rx="6" fill="#00FF66" opacity="0.16" stroke="#00FF66" stroke-opacity="0.35" stroke-width="1" />
+          <rect x="104" y="70" width="20" height="26" rx="6" fill="#00FF66" opacity="0.16" stroke="#00FF66" stroke-opacity="0.35" stroke-width="1" />
+          <g class="float-mid" transform="translate(180 34)">
+            <path d="M6 8h22l-6 34a8 8 0 0 1-8 6H20a8 8 0 0 1-8-6z" fill="#0b0b0b" stroke="#00FF66" stroke-opacity="0.7" stroke-width="2" />
+            <path d="M14 8a8 8 0 0 1 12 0" fill="none" stroke="#00FF66" stroke-opacity="0.7" stroke-width="2" />
+            <rect x="16" y="24" width="6" height="16" rx="3" fill="url(#a1n)" />
+            <rect x="26" y="24" width="6" height="16" rx="3" fill="url(#a1n)" />
+          </g>
+          <g class="float-slow" transform="translate(238 30)">
+            <rect x="0" y="10" width="56" height="44" rx="8" fill="#050505" stroke="#00FF66" stroke-opacity="0.55" stroke-width="1.8" />
+            <path d="M0 10 28 34 56 10" fill="none" stroke="#00FF66" stroke-opacity="0.6" stroke-width="1.8" />
+          </g>
+          <g fill="#00FF66" font-family="Consolas, monospace" font-size="15" font-weight="700" filter="url(#a1g)" direction="ltr">
+            <text class="float-fast" x="270" y="106" text-anchor="middle">$</text>
+          </g>
+          <rect x="14" y="118" width="292" height="5" rx="2.5" fill="#00FF66" opacity="0.25" />
+        </svg>
+      </div>
+      <div class="app-body">
+        <h3>1. المتاجر الإلكترونية</h3>
+        <p class="app-short">تعرض المنتجات وتتيح الشراء والدفع وتتبع الطلبات.</p>
+        <div class="app-layers">
+          <div class="app-layer"><span class="tag">أمامية</span><span>تعرض صور المنتجات والأسرار والأزرار وسلة الشراء.</span></div>
+          <div class="app-layer"><span class="tag">خلفية</span><span>تحسب السعر الكلي، تتحقق من الدفع، وتسجل الطلب.</span></div>
+          <div class="app-layer"><span class="tag">بيانات</span><span>تخزّن المنتجات والمخزون وحسابات المستخدمين وسجل الطلبات.</span></div>
+        </div>
+        <div class="app-more">
+          <p><span class="hl">مثال:</span> عند الضغط على «اشترِ الآن» ترسل الواجهة الأمامية معرف المنتج إلى الخادم، فيتحقق الخادم من الكمية المتاحة، ويخصمها من المخزون، ثم ينشئ سجل طلب جديد في قاعدة البيانات.</p>
+        </div>
+        <span class="app-toggle">اقرأ التفاصيل <span class="chev" aria-hidden="true">▾</span></span>
+      </div>
+    </div>
+
+    <!-- 2) البريد الإلكتروني -->
+    <div class="app-card reveal d1" role="button" tabindex="0" aria-expanded="false">
+      <div class="art-wrap">
+        <svg viewBox="0 0 320 150" role="img" aria-label="تطبيق بريد إلكتروني مع صندوق رسائل">
+          <defs>
+            <linearGradient id="a2n" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#00FF66" /><stop offset="100%" stop-color="#00CC55" />
+            </linearGradient>
+            <filter id="a2g" x="-60%" y="-60%" width="220%" height="220%">
+              <feGaussianBlur stdDeviation="4" result="b" /><feMerge><feMergeNode in="b" /><feMergeNode in="SourceGraphic" /></feMerge>
+            </filter>
+          </defs>
+          <g class="float-slow" transform="translate(20 24)">
+            <rect x="0" y="0" width="130" height="92" rx="14" fill="#050505" stroke="#00FF66" stroke-opacity="0.45" stroke-width="1.8" />
+            <rect x="12" y="12" width="106" height="20" rx="6" fill="#000000" stroke="#00FF66" stroke-opacity="0.28" stroke-width="1" />
+            <circle cx="24" cy="22" r="3.4" fill="#00FF66" />
+            <rect x="34" y="19" width="60" height="6" rx="3" fill="#00FF66" opacity="0.5" />
+            <g fill="none" stroke="#00FF66" stroke-opacity="0.35" stroke-width="1.2">
+              <rect x="12" y="40" width="106" height="14" rx="5" />
+              <rect x="12" y="60" width="106" height="14" rx="5" />
+            </g>
+            <circle cx="22" cy="47" r="4" fill="#00FF66" opacity="0.85" />
+            <circle cx="22" cy="67" r="4" fill="#00FF66" opacity="0.4" />
+            <rect x="32" y="44" width="60" height="5" rx="2.5" fill="#ffffff" opacity="0.2" />
+            <rect x="32" y="64" width="46" height="5" rx="2.5" fill="#ffffff" opacity="0.14" />
+          </g>
+          <g class="float-mid" transform="translate(180 40)">
+            <rect x="0" y="0" width="118" height="76" rx="10" fill="#0b0b0b" stroke="#00FF66" stroke-opacity="0.6" stroke-width="2" />
+            <path d="M0 0 59 42 118 0" fill="none" stroke="#00FF66" stroke-opacity="0.7" stroke-width="2" />
+            <path d="M0 76 44 34M118 76 74 34" stroke="#00FF66" stroke-opacity="0.35" stroke-width="1.6" fill="none" />
+            <circle cx="59" cy="52" r="9" fill="url(#a2n)" />
+          </g>
+          <g fill="#00FF66" font-family="Consolas, monospace" font-size="14" font-weight="700" filter="url(#a2g)" direction="ltr">
+            <text class="float-fast" x="286" y="46" text-anchor="middle">@</text>
+          </g>
+          <rect x="20" y="130" width="280" height="5" rx="2.5" fill="#00FF66" opacity="0.25" />
+        </svg>
+      </div>
+      <div class="app-body">
+        <h3>2. تطبيقات البريد الإلكتروني</h3>
+        <p class="app-short">تتيح إرسال الرسائل واستلامها وتنظيمها في مجلدات.</p>
+        <div class="app-layers">
+          <div class="app-layer"><span class="tag">أمامية</span><span>تعرض صندوق الوارد وشاشة كتابة رسالة جديدة.</span></div>
+          <div class="app-layer"><span class="tag">خلفية</span><span>ترسل الرسالة إلى العنوان الصحيح وتتحقق من المرفقات.</span></div>
+          <div class="app-layer"><span class="tag">بيانات</span><span>تخزّن الحسابات والرسائل وجهات الاتصال والمرفقات.</span></div>
+        </div>
+        <div class="app-more">
+          <p><span class="hl">مثال:</span> عند الضغط على «إرسال» تُحفظ الرسالة في قاعدة البيانات بحالة «مُرسلة»، ثم يرسلها الخادم إلى بريد المستلم، وتظهر بعد ذلك في صندوق الصادر.</p>
+        </div>
+        <span class="app-toggle">اقرأ التفاصيل <span class="chev" aria-hidden="true">▾</span></span>
+      </div>
+    </div>
+
+    <!-- 3) شبكات التواصل -->
+    <div class="app-card reveal d2" role="button" tabindex="0" aria-expanded="false">
+      <div class="art-wrap">
+        <svg viewBox="0 0 320 150" role="img" aria-label="شبكة تواصل اجتماعي مع مستخدمين متصلين وتعليقات">
+          <defs>
+            <linearGradient id="a3n" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#00FF66" /><stop offset="100%" stop-color="#00CC55" />
+            </linearGradient>
+            <filter id="a3g" x="-60%" y="-60%" width="220%" height="220%">
+              <feGaussianBlur stdDeviation="4" result="b" /><feMerge><feMergeNode in="b" /><feMergeNode in="SourceGraphic" /></feMerge>
+            </filter>
+          </defs>
+          <g stroke="#00FF66" stroke-width="1.6" stroke-opacity="0.5" fill="none">
+            <path class="dash-flow" d="M70 50 L150 34" />
+            <path class="dash-flow" d="M70 50 L110 108" />
+            <path class="dash-flow" d="M150 34 L236 62" />
+            <path class="dash-flow" d="M110 108 L236 62" />
+          </g>
+          <g class="float-slow" transform="translate(44 28)">
+            <circle cx="26" cy="22" r="20" fill="#050505" stroke="#00FF66" stroke-opacity="0.6" stroke-width="2" />
+            <circle cx="26" cy="16" r="7" fill="#00FF66" opacity="0.85" />
+            <path d="M12 36c2-8 8-11 14-11s12 3 14 11" fill="#00FF66" opacity="0.35" />
+          </g>
+          <g class="float-mid" transform="translate(124 12)">
+            <circle cx="26" cy="22" r="20" fill="#050505" stroke="#00FF66" stroke-opacity="0.6" stroke-width="2" />
+            <circle cx="26" cy="16" r="7" fill="#00FF66" opacity="0.85" />
+            <path d="M12 36c2-8 8-11 14-11s12 3 14 11" fill="#00FF66" opacity="0.35" />
+          </g>
+          <g class="float-fast" transform="translate(210 40)">
+            <circle cx="26" cy="22" r="20" fill="#050505" stroke="#00FF66" stroke-opacity="0.6" stroke-width="2" />
+            <circle cx="26" cy="16" r="7" fill="#00FF66" opacity="0.85" />
+            <path d="M12 36c2-8 8-11 14-11s12 3 14 11" fill="#00FF66" opacity="0.35" />
+          </g>
+          <g class="float-slow" transform="translate(84 86)">
+            <circle cx="26" cy="22" r="20" fill="#050505" stroke="#00FF66" stroke-opacity="0.6" stroke-width="2" />
+            <circle cx="26" cy="16" r="7" fill="#00FF66" opacity="0.85" />
+            <path d="M12 36c2-8 8-11 14-11s12 3 14 11" fill="#00FF66" opacity="0.35" />
+          </g>
+          <g class="float-mid" transform="translate(214 86)">
+            <rect x="0" y="0" width="86" height="34" rx="10" fill="#050505" stroke="#00FF66" stroke-opacity="0.5" stroke-width="1.6" />
+            <path d="M14 34l8 10 8-10" fill="#050505" stroke="#00FF66" stroke-opacity="0.5" stroke-width="1.6" />
+            <rect x="10" y="10" width="52" height="5" rx="2.5" fill="#ffffff" opacity="0.2" />
+            <rect x="10" y="20" width="36" height="5" rx="2.5" fill="#ffffff" opacity="0.14" />
+            <circle cx="72" cy="17" r="7" fill="url(#a3n)" />
+          </g>
+          <rect x="20" y="130" width="280" height="5" rx="2.5" fill="#00FF66" opacity="0.25" />
+        </svg>
+      </div>
+      <div class="app-body">
+        <h3>3. منصات التواصل الاجتماعي</h3>
+        <p class="app-short">تتيح نشر المنشورات والتعليق والإعجاب ومتابعة الأصدقاء.</p>
+        <div class="app-layers">
+          <div class="app-layer"><span class="tag">أمامية</span><span>تعرض المنشورات والفيديوهات وأزرار الإعجاب والتعليق.</span></div>
+          <div class="app-layer"><span class="tag">خلفية</span><span>تقرر من يرى المنشور، وتتحقق من المحتوى، وتُرسل التنبيهات.</span></div>
+          <div class="app-layer"><span class="tag">بيانات</span><span>تخزّن الحسابات والمنشورات والتعليقات وقوائم المتابعة.</span></div>
+        </div>
+        <div class="app-more">
+          <p><span class="hl">مثال:</span> عند الضغط على «إعجاب» يُرسل الطلب إلى الخادم، فيسجل الإعجاب في قاعدة البيانات، ثم يعيد تحديث العدد ليظهر على الشاشة فورًا.</p>
+        </div>
+        <span class="app-toggle">اقرأ التفاصيل <span class="chev" aria-hidden="true">▾</span></span>
+      </div>
+    </div>
+
+    <!-- 4) منصات التعلم -->
+    <div class="app-card reveal" role="button" tabindex="0" aria-expanded="false">
+      <div class="art-wrap">
+        <svg viewBox="0 0 320 150" role="img" aria-label="منصة تعلم إلكتروني مع فيديو وشهادة">
+          <defs>
+            <linearGradient id="a4n" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#00FF66" /><stop offset="100%" stop-color="#00CC55" />
+            </linearGradient>
+            <filter id="a4g" x="-60%" y="-60%" width="220%" height="220%">
+              <feGaussianBlur stdDeviation="4" result="b" /><feMerge><feMergeNode in="b" /><feMergeNode in="SourceGraphic" /></feMerge>
+            </filter>
+          </defs>
+          <g class="float-slow" transform="translate(18 26)">
+            <rect x="0" y="0" width="150" height="90" rx="12" fill="#050505" stroke="#00FF66" stroke-opacity="0.45" stroke-width="1.8" />
+            <rect x="10" y="10" width="130" height="50" rx="8" fill="#000000" stroke="#00FF66" stroke-opacity="0.3" stroke-width="1" />
+            <circle cx="75" cy="35" r="14" fill="url(#a4n)" />
+            <path d="M71 29l12 6-12 6z" fill="#000000" />
+            <rect x="10" y="68" width="90" height="6" rx="3" fill="#ffffff" opacity="0.2" />
+            <rect x="10" y="78" width="60" height="5" rx="2.5" fill="#00FF66" opacity="0.6" />
+          </g>
+          <g class="float-mid" transform="translate(186 30)">
+            <path d="M50 6 96 26 50 46 4 26z" fill="#050505" stroke="#00FF66" stroke-opacity="0.6" stroke-width="2" />
+            <path d="M20 36v22c0 8 13.4 14 30 14s30-6 30-14V36" fill="none" stroke="#00FF66" stroke-opacity="0.45" stroke-width="2" />
+            <path d="M96 26v26" stroke="#00FF66" stroke-opacity="0.6" stroke-width="2" fill="none" />
+            <circle cx="96" cy="56" r="5" fill="url(#a4n)" />
+          </g>
+          <g fill="#00FF66" font-family="Consolas, monospace" font-size="14" font-weight="700" filter="url(#a4g)" direction="ltr">
+            <text class="float-fast" x="258" y="112" text-anchor="middle">100%</text>
+          </g>
+          <rect x="18" y="128" width="284" height="5" rx="2.5" fill="#00FF66" opacity="0.25" />
+        </svg>
+      </div>
+      <div class="app-body">
+        <h3>4. منصات التعلم الإلكتروني</h3>
+        <p class="app-short">تعرض الدروس والفيديوهات والاختبارات وتتابع تقدّم الطالب.</p>
+        <div class="app-layers">
+          <div class="app-layer"><span class="tag">أمامية</span><span>تعرض الدروس ومشغّل الفيديو وأزرار الانتقال بين الدروس.</span></div>
+          <div class="app-layer"><span class="tag">خلفية</span><span>تصحح الاختبارات وتحسب الدرجات وتتحقق من تسجيل الطالب.</span></div>
+          <div class="app-layer"><span class="tag">بيانات</span><span>تخزّن الدروس والطلاب والدرجات ونسبة الإنجاز.</span></div>
+        </div>
+        <div class="app-more">
+          <p><span class="hl">مثال:</span> عند إنهاء اختبار من 12 سؤالًا ترسل الواجهة الأمامية الإجابات إلى الخادم، فيقارنها بالحقائق المخزنة، ثم يحفظ الدرجة في قاعدة البيانات ويعرض النتيجة.</p>
+        </div>
+        <span class="app-toggle">اقرأ التفاصيل <span class="chev" aria-hidden="true">▾</span></span>
+      </div>
+    </div>
+
+    <!-- 5) المواقع البنكية -->
+    <div class="app-card reveal d1" role="button" tabindex="0" aria-expanded="false">
+      <div class="art-wrap">
+        <svg viewBox="0 0 320 150" role="img" aria-label="موقع بنكي مع مبنى البنك ودروع الحماية">
+          <defs>
+            <linearGradient id="a5n" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#00FF66" /><stop offset="100%" stop-color="#00CC55" />
+            </linearGradient>
+            <filter id="a5g" x="-60%" y="-60%" width="220%" height="220%">
+              <feGaussianBlur stdDeviation="4" result="b" /><feMerge><feMergeNode in="b" /><feMergeNode in="SourceGraphic" /></feMerge>
+            </filter>
+          </defs>
+          <g class="float-slow" transform="translate(26 26)">
+            <path d="M62 4 116 26H8z" fill="#00FF66" opacity="0.35" stroke="#00FF66" stroke-opacity="0.6" stroke-width="1.6" />
+            <rect x="20" y="30" width="84" height="66" rx="6" fill="#050505" stroke="#00FF66" stroke-opacity="0.5" stroke-width="1.8" />
+            <g fill="#00FF66" opacity="0.55">
+              <rect x="30" y="40" width="12" height="18" rx="2" />
+              <rect x="48" y="40" width="12" height="18" rx="2" />
+              <rect x="66" y="40" width="12" height="18" rx="2" />
+              <rect x="84" y="40" width="12" height="18" rx="2" />
+            </g>
+            <rect x="52" y="68" width="20" height="28" rx="3" fill="url(#a5n)" />
+          </g>
+          <g class="float-mid" transform="translate(178 34)">
+            <path d="M40 4 74 16v22c0 18-14 30-34 34-20-4-34-16-34-34V16z" fill="#050505" stroke="#00FF66" stroke-opacity="0.65" stroke-width="2" />
+            <path d="M26 36l10 10 18-20" fill="none" stroke="#00FF66" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
+          </g>
+          <g fill="#00FF66" font-family="Consolas, monospace" font-size="14" font-weight="700" filter="url(#a5g)" direction="ltr">
+            <text class="float-fast" x="258" y="106" text-anchor="middle">SSL</text>
+          </g>
+          <rect x="18" y="126" width="284" height="5" rx="2.5" fill="#00FF66" opacity="0.25" />
+        </svg>
+      </div>
+      <div class="app-body">
+        <h3>5. المواقع البنكية</h3>
+        <p class="app-short">تتيح الاطلاع على الرصيد وتحويل الأموال ودفع الفواتير بأمان عالٍ.</p>
+        <div class="app-layers">
+          <div class="app-layer"><span class="tag">أمامية</span><span>تعرض الرصيد والحركات ونماذج التحويل بشكل آمن.</span></div>
+          <div class="app-layer"><span class="tag">خلفية</span><span>تتحقق من الهوية والرصيد وتنفذ التحويل وتسجل العملية.</span></div>
+          <div class="app-layer"><span class="tag">بيانات</span><span>تخزّن الحسابات والأرصدة وسجل العمليات المشفّر.</span></div>
+        </div>
+        <div class="app-more">
+          <p><span class="hl">مثال:</span> عند تحويل مبلغ يتحقق الخادم من كفاية الرصيد، فيخصم من حساب المرسل ويضيف إلى حساب المستلم، ويسجل الحركتين في قاعدة البيانات.</p>
+        </div>
+        <span class="app-toggle">اقرأ التفاصيل <span class="chev" aria-hidden="true">▾</span></span>
+      </div>
+    </div>
+
+    <!-- 6) محركات البحث -->
+    <div class="app-card reveal d2" role="button" tabindex="0" aria-expanded="false">
+      <div class="art-wrap">
+        <svg viewBox="0 0 320 150" role="img" aria-label="محرك بحث يعرض قائمة نتائج">
+          <defs>
+            <linearGradient id="a6n" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#00FF66" /><stop offset="100%" stop-color="#00CC55" />
+            </linearGradient>
+            <filter id="a6g" x="-60%" y="-60%" width="220%" height="220%">
+              <feGaussianBlur stdDeviation="4" result="b" /><feMerge><feMergeNode in="b" /><feMergeNode in="SourceGraphic" /></feMerge>
+            </filter>
+          </defs>
+          <g class="float-mid" transform="translate(18 20)">
+            <circle cx="34" cy="34" r="28" fill="#050505" stroke="#00FF66" stroke-opacity="0.7" stroke-width="3" />
+            <path d="M56 56l20 20" stroke="#00FF66" stroke-width="5" stroke-linecap="round" opacity="0.8" />
+            <path d="M22 30h24M22 40h16" stroke="#00FF66" stroke-width="3" stroke-linecap="round" opacity="0.6" />
+          </g>
+          <g class="float-slow" transform="translate(130 14)">
+            <rect x="0" y="0" width="170" height="108" rx="12" fill="#050505" stroke="#00FF66" stroke-opacity="0.45" stroke-width="1.8" />
+            <rect x="12" y="12" width="146" height="18" rx="9" fill="#000000" stroke="#00FF66" stroke-opacity="0.3" stroke-width="1" />
+            <circle cx="24" cy="21" r="3.6" fill="#00FF66" />
+            <g fill="#00FF66">
+              <rect x="14" y="40" width="80" height="7" rx="3.5" opacity="0.8" />
+              <rect x="14" y="54" width="140" height="5" rx="2.5" opacity="0.25" />
+              <rect x="14" y="66" width="70" height="7" rx="3.5" opacity="0.8" />
+              <rect x="14" y="80" width="120" height="5" rx="2.5" opacity="0.25" />
+              <rect x="14" y="92" width="60" height="7" rx="3.5" opacity="0.8" />
+            </g>
+          </g>
+          <g fill="#00FF66" font-family="Consolas, monospace" font-size="14" font-weight="700" filter="url(#a6g)" direction="ltr">
+            <text class="float-fast" x="288" y="132" text-anchor="middle">?</text>
+          </g>
+        </svg>
+      </div>
+      <div class="app-body">
+        <h3>6. محركات البحث</h3>
+        <p class="app-short">تستقبل كلمة البحث وتعرض قائمة النتائج الأكثر صلة.</p>
+        <div class="app-layers">
+          <div class="app-layer"><span class="tag">أمامية</span><span>تعرض خانة البحث وقائمة النتائج واقتراحات الكلمات.</span></div>
+          <div class="app-layer"><span class="tag">خلفية</span><span>تفهم الكلمة المطلوبة وترتب النتائج حسب الأهمية.</span></div>
+          <div class="app-layer"><span class="tag">بيانات</span><span>تخزّن فهرس المواقع وكلماتها وتاريخ الزيارات.</span></div>
+        </div>
+        <div class="app-more">
+          <p><span class="hl">مثال:</span> تكتب «أفضل هاتف» فيضغط الخادم على فهرس ضخم محفوظ في قاعدة البيانات، ثم يعيد أفضل النتائج لتعرضها الواجهة الأمامية في أقل من ثانية.</p>
+        </div>
+        <span class="app-toggle">اقرأ التفاصيل <span class="chev" aria-hidden="true">▾</span></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== أنشطة تفاعلية قبل الاختبار ===================== -->
+<section class="section" id="activities">
+  <div class="section-head reveal">
+    <span class="eyebrow">تدرّب قبل الاختبار</span>
+    <h2 class="section-title">اختبر <span class="accent">فهمك</span> الآن</h2>
+    <p class="section-desc">أجب عن هذه الأنشطة السريعة، وسيتم توضيح الإجابة الصحيحة لك مباشرة.</p>
+    <div class="divider" aria-hidden="true"></div>
+  </div>
+
+  <div class="grid grid-2" id="activitiesGrid"></div>
+
+  <div class="note reveal" style="margin-top:clamp(16px,2.2vw,24px)">
+    <strong>قاعدة ذهبية:</strong> الواجهة الأمامية = العرض والتفاعل • الواجهة الخلفية = المعالجة والقواعد • قاعدة البيانات = الحفظ والاسترجاع.
+  </div>
+</section>
+
+<!-- ===================== الاختبار النهائي ===================== -->
+<section class="section" id="exam">
+  <div class="section-head reveal">
+    <span class="eyebrow">التقييم النهائي</span>
+    <h2 class="section-title">الاختبار <span class="accent">النهائي</span></h2>
+    <p class="section-desc">12 سؤالًا اختيار من متعدد. اختر إجابة واحدة لكل سؤال، وستحصل على النتيجة والشرح في النهاية.</p>
+    <div class="divider" aria-hidden="true"></div>
+  </div>
+
+  <div class="exam-panel reveal">
+    <div id="examBody">
+      <div class="exam-top">
+        <span class="exam-progress-text" id="examProgressText">السؤال 1 من 12</span>
+        <span class="exam-score-live">نتيجتك الحالية: <b id="examLiveScore">0</b> / 12</span>
+      </div>
+      <div class="progress-track" role="progressbar" aria-valuemin="0" aria-valuemax="12" aria-valuenow="0" aria-label="تقدم الاختبار" id="examProgressBar">
+        <div class="progress-fill" id="examProgressFill"></div>
+      </div>
+
+      <h3 class="exam-q" id="examQuestionText"></h3>
+      <div class="opts" id="examOptions"></div>
+
+      <div class="feedback" id="examFeedback" role="status" aria-live="polite"></div>
+
+      <div class="exam-actions">
+        <span class="exam-score-live" id="examHint">اختر إجابة واحدة للمتابعة</span>
+        <div class="exam-nav">
+          <button class="btn btn-ghost btn-sm" id="examRestart" type="button">إعادة الاختبار</button>
+          <button class="btn" id="examNext" type="button" disabled>السؤال التالي</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- شاشة النتيجة -->
+    <div id="examResult" class="result-wrap" hidden>
+      <div class="result-ring">
+        <svg viewBox="0 0 200 200" role="img" aria-label="مؤشر النتيجة النهائية">
+          <defs>
+            <linearGradient id="resGrad" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#00CC55" />
+              <stop offset="100%" stop-color="#00FF66" />
+            </linearGradient>
+          </defs>
+          <circle class="ring-bg" cx="100" cy="100" r="85" />
+          <circle class="ring-fg" id="ringFg" cx="100" cy="100" r="85" />
+        </svg>
+        <div class="ring-center">
+          <div class="ring-score" id="resultScore">0 / 12</div>
+          <div class="ring-percent" id="resultPercent">0%</div>
+        </div>
+      </div>
+      <h3 class="result-title" id="resultTitle">انتهى الاختبار</h3>
+      <p class="result-msg" id="resultMsg"></p>
+      <div class="result-stats" id="resultStats"></div>
+      <div class="review-list" id="reviewList"></div>
+      <button class="btn" id="resultRestart" type="button">إعادة الاختبار من البداية</button>
+    </div>
+  </div>
+</section>
+</main>
+
+<!-- ===================== الفوتر ===================== -->
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-name">تحت إشراف مستر احمد عواد</div>
+    <p class="footer-role">المبرمج حسين رضا حسين</p>
+    <p class="footer-sub">منصة تعليمية تفاعلية تشرح طبقات تطبيقات الويب باللغة العربية</p>
+
+    <nav class="footer-links" aria-label="روابط الفوتر">
+      <a href="#home">الرئيسية</a>
+      <a href="#intro">مقدمة عن تطبيقات الويب</a>
+      <a href="#frontend">الواجهة الأمامية</a>
+      <a href="#backend">الواجهة الخلفية</a>
+      <a href="#database">قاعدة البيانات</a>
+      <a href="#flow">تدفق البيانات</a>
+      <a href="#apps">تطبيقات الويب</a>
+      <a href="#exam">الاختبار</a>
+    </nav>
+
+    <div class="footer-bottom">
+      <p style="margin-bottom:6px">© <span id="year">2026</span> عالم تطبيقات الويب — جميع الحقوق محفوظة.</p>
+      <p style="margin:0">صُمم بعناية لطلاب <span class="hl">مستر احمد عواد</span> • بإشراف <span class="hl">المبرمج حسين رضا حسين</span></p>
+    </div>
+  </div>
+</footer>
+
+<button id="toTop" type="button" aria-label="العودة إلى أعلى الصفحة">▲</button>
+
+<script>
+/* ============================================================================
+   عالم تطبيقات الويب - محرك التفاعل الكامل
+   (التمرير • التنقل • الظهور • الأنشطة • تدفق البيانات • الاختبار)
+   ============================================================================ */
+(function () {
+  'use strict';
+
+  /* ---------------------- أدوات مساعدة ---------------------- */
+  function $(sel, ctx) { return (ctx || document).querySelector(sel); }
+  function $$(sel, ctx) { return Array.prototype.slice.call((ctx || document).querySelectorAll(sel)); }
+  function cap(s) { return s.charAt(0).toUpperCase() + s.slice(1); }
+  var KEYS = ['أ', 'ب', 'ج', 'د'];
+
+  /* ---------------------- السنة في الفوتر ---------------------- */
+  var yearEl = $('#year');
+  if (yearEl) { yearEl.textContent = String(new Date().getFullYear()); }
+
+  /* ---------------------- شريط التمرير + زر الأعلى ---------------------- */
+  var scrollBar = $('#scrollBar');
+  var toTop = $('#toTop');
+
+  function onScroll() {
+    var doc = document.documentElement;
+    var max = doc.scrollHeight - doc.clientHeight;
+    var pct = max > 0 ? (doc.scrollTop / max) * 100 : 0;
+    if (scrollBar) { scrollBar.style.width = pct + '%'; }
+    if (toTop) { toTop.classList.toggle('show', doc.scrollTop > 420); }
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', onScroll);
+  onScroll();
+
+  if (toTop) {
+    toTop.addEventListener('click', function () {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  }
+
+  /* ---------------------- القائمة على الجوال ---------------------- */
+  var navToggle = $('#navToggle');
+  var mainNav = $('#mainNav');
+
+  function closeNav() {
+    if (!mainNav || !navToggle) { return; }
+    mainNav.classList.remove('open');
+    navToggle.setAttribute('aria-expanded', 'false');
+    navToggle.textContent = '☰';
+  }
+  if (navToggle && mainNav) {
+    navToggle.addEventListener('click', function () {
+      var open = mainNav.classList.toggle('open');
+      navToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+      navToggle.textContent = open ? '✕' : '☰';
+    });
+    $$('.nav-link', mainNav).forEach(function (link) {
+      link.addEventListener('click', closeNav);
+    });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') { closeNav(); }
+    });
+  }
+
+  /* ---------------------- تمييز رابط القائمة الحالي ---------------------- */
+  var navLinks = $$('.nav-link');
+  var navSections = navLinks
+    .map(function (l) { return document.querySelector(l.getAttribute('href')); })
+    .filter(Boolean);
+
+  function spyNav() {
+    var pos = window.scrollY + 180;
+    var currentId = navSections.length ? navSections[0].id : '';
+    navSections.forEach(function (sec) {
+      if (sec.offsetTop <= pos) { currentId = sec.id; }
+    });
+    navLinks.forEach(function (l) {
+      l.classList.toggle('active', l.getAttribute('href') === '#' + currentId);
+    });
+  }
+  window.addEventListener('scroll', spyNav, { passive: true });
+  spyNav();
+
+  /* ---------------------- الظهور التدريجي عند التمرير ---------------------- */
+  var revealObserver = null;
+  if ('IntersectionObserver' in window) {
+    revealObserver = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('in');
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+  }
+  function observeReveals(root) {
+    $$('.reveal', root || document).forEach(function (el) {
+      if (revealObserver) { revealObserver.observe(el); }
+      else { el.classList.add('in'); }
+    });
+  }
+  observeReveals(document);
+
+  /* ---------------------- توهج يتبع الماوس داخل الكروت ---------------------- */
+  var finePointer = false;
+  if (window.matchMedia) {
+    finePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+  }
+  if (finePointer) {
+    $$('.card, .app-card, .quiz-card, .node, .flow-panel, .exam-panel').forEach(function (el) {
+      el.addEventListener('mousemove', function (e) {
+        var r = el.getBoundingClientRect();
+        el.style.setProperty('--mx', (e.clientX - r.left) + 'px');
+        el.style.setProperty('--my', (e.clientY - r.top) + 'px');
+      });
+      el.addEventListener('mouseleave', function () {
+        el.style.removeProperty('--mx');
+        el.style.removeProperty('--my');
+      });
+    });
+  }
+
+  /* ======================================================================
+     بطاقات تطبيقات الويب (فتح وإغلاق التفاصيل)
+     ====================================================================== */
+  $$('.app-card').forEach(function (card) {
+    function toggle() {
+      var open = card.classList.toggle('open');
+      card.setAttribute('aria-expanded', open ? 'true' : 'false');
+      var label = $('.app-toggle', card);
+      if (label) {
+        label.innerHTML = (open ? 'إخفاء التفاصيل ' : 'اقرأ التفاصيل ') + '<span class="chev" aria-hidden="true">▾</span>';
+      }
+    }
+    card.addEventListener('click', function (e) {
+      if (e.target.closest('a')) { return; }
+      toggle();
+    });
+    card.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' || e.key === ' ' || e.key === 'Spacebar') {
+        e.preventDefault();
+        toggle();
+      }
+    });
+  });
+
+  /* ======================================================================
+     الأنشطة التفاعلية (قبل الاختبار)
+     ====================================================================== */
+  var ACTIVITIES = [
+    {
+      q: 'أي طبقة تعرض المعلومات للمستخدم؟',
+      opts: ['قاعدة البيانات', 'الواجهة الأمامية', 'الواجهة الخلفية', 'الخادم'],
+      correct: 1,
+      exp: 'الواجهة الأمامية هي التي تعرض المحتوى ونتائج البحث على الشاشة، لأنها الجزء الذي يعمل داخل المتصفح.'
+    },
+    {
+      q: 'أي طبقة تعالج الطلبات وتطبق قواعد التطبيق؟',
+      opts: ['الواجهة الأمامية', 'قاعدة البيانات', 'الواجهة الخلفية', 'الشبكة'],
+      correct: 2,
+      exp: 'الواجهة الخلفية تستقبل الطلب على الخادم وتعالجه ثم تعيد النتيجة إلى الواجهة الأمامية.'
+    },
+    {
+      q: 'أي طبقة تحفظ البيانات وتوفرها عند الحاجة؟',
+      opts: ['الواجهة الأمامية', 'الخادم', 'قاعدة البيانات', 'المتصفح'],
+      correct: 2,
+      exp: 'قاعدة البيانات هي المخزن المنظم للمنتجات والحسابات والطلبات، وتعيدها عندما تطلبها الواجهة الخلفية.'
+    },
+    {
+      q: 'أي طبقة تستقبل تفاعلات المستخدم مثل الضغط على الأزرار والكتابة؟',
+      opts: ['الواجهة الأمامية', 'الواجهة الخلفية', 'قاعدة البيانات', 'الخادم'],
+      correct: 0,
+      exp: 'الواجهة الأمامية هي نقطة التلامس مع المستخدم: الأزرار والنماذج وخانة البحث كلها تعمل فيها.'
+    }
+  ];
+
+  function buildFeedback(box, ok, exp) {
+    box.className = 'feedback show ' + (ok ? 'good' : 'bad');
+    box.innerHTML =
+      '<span aria-hidden="true">' + (ok ? '✅' : '❌') + '</span>' +
+      '<span><span>' + (ok ? 'إجابة صحيحة! أحسنت.' : 'إجابة غير صحيحة، حاول مرة أخرى.') + '</span>' +
+      '<span class="fb-body">' + exp + '</span></span>';
+  }
+
+  function buildActivities() {
+    var wrap = $('#activitiesGrid');
+    if (!wrap) { return; }
+    ACTIVITIES.forEach(function (a, i) {
+      var card = document.createElement('div');
+      card.className = 'quiz-card reveal d' + (i % 3);
+      var q = document.createElement('p');
+      q.className = 'quiz-q';
+      q.textContent = (i + 1) + '. ' + a.q;
+      var opts = document.createElement('div');
+      opts.className = 'opts';
+      var fb = document.createElement('div');
+      fb.className = 'feedback';
+      fb.setAttribute('role', 'status');
+      fb.setAttribute('aria-live', 'polite');
+
+      a.opts.forEach(function (text, j) {
+        var b = document.createElement('button');
+        b.type = 'button';
+        b.className = 'opt';
+        b.innerHTML = '<span class="key">' + KEYS[j] + '</span><span></span>';
+        $('span:last-child', b).textContent = text;
+        b.addEventListener('click', function () {
+          var ok = j === a.correct;
+          if (ok) {
+            $$('.opt', opts).forEach(function (x) { x.classList.add('locked'); });
+            b.classList.add('correct');
+          } else {
+            b.classList.add('wrong', 'locked');
+          }
+          buildFeedback(fb, ok, a.exp);
+        });
+        opts.appendChild(b);
+      });
+
+      card.appendChild(q);
+      card.appendChild(opts);
+      card.appendChild(fb);
+      wrap.appendChild(card);
+    });
+    observeReveals(wrap);
+  }
+
+  /* ======================================================================
+     محرك تدفق البيانات بين الطبقات الثلاث
+     ====================================================================== */
+  var FLOW_STEP_MS = 3400;
+
+  var FLOW_STEPS = [
+    {
+      title: 'الخطوة 1: الواجهة الأمامية تستقبل كلمات البحث',
+      text: 'يفتح المستخدم المتجر الإلكتروني ويكتب كلمة البحث في خانة البحث. الواجهة الأمامية هي التي تستقبل هذه الكلمات مباشرة من المستخدم.',
+      visual: 'المستخدم ➜ الواجهة الأمامية',
+      active: ['frontend'],
+      done: [],
+      conns: [],
+      status: { frontend: 'تستقبل كلمة البحث…', backend: 'جاهز', database: 'جاهزة' },
+      search: true,
+      results: false
+    },
+    {
+      title: 'الخطوة 2: الواجهة الأمامية ترسل الطلب إلى الواجهة الخلفية',
+      text: 'ترسل الواجهة الأمامية الطلب عبر الشبكة إلى الخادم. الطلب يحتوي على كلمة البحث التي كتبها المستخدم، ويستخدم طريقة تسمى HTTP.',
+      visual: 'الواجهة الأمامية ➜ الواجهة الخلفية (طلب)',
+      active: ['frontend'],
+      done: ['frontend'],
+      conns: [{ id: 'conn1', dir: 'dir-left', label: 'طلب البحث' }],
+      status: { frontend: 'أرسلت الطلب…', backend: 'يستقبل الطلب', database: 'جاهزة' },
+      search: true,
+      results: false
+    },
+    {
+      title: 'الخطوة 3: الواجهة الخلفية تستقبل الطلب وتعالجه',
+      text: 'يصل الطلب إلى الخادم، فتقوم الواجهة الخلفية بمعالجته: تتحقق من صحة الطلب وتطبق قواعد التطبيق قبل أن تبحث عن البيانات.',
+      visual: 'الواجهة الخلفية: قراءة ➜ تحقق ➜ معالجة',
+      active: ['backend'],
+      done: ['frontend'],
+      conns: [],
+      status: { frontend: 'بانتظار النتيجة', backend: 'يعالج الطلب…', database: 'جاهزة' },
+      search: true,
+      results: false
+    },
+    {
+      title: 'الخطوة 4: الواجهة الخلفية تسأل قاعدة البيانات',
+      text: 'تحتاج الواجهة الخلفية إلى معلومات المنتجات، فترسل استعلامًا إلى قاعدة البيانات يسألها عن كل المنتجات المطابقة لكلمة البحث.',
+      visual: 'الواجهة الخلفية ➜ قاعدة البيانات (استعلام)',
+      active: ['backend'],
+      done: ['frontend'],
+      conns: [{ id: 'conn2', dir: 'dir-left', label: 'استعلام عن المنتجات' }],
+      status: { frontend: 'بانتظار النتيجة', backend: 'يسأل قاعدة البيانات…', database: 'تستقبل الاستعلام' },
+      search: true,
+      results: false
+    },
+    {
+      title: 'الخطوة 5: قاعدة البيانات تبحث وتُرجع النتائج',
+      text: 'تبحث قاعدة البيانات في سجلاتها المحفوظة، وتجد المنتجات المطابقة، ثم ترجعها إلى الواجهة الخلفية. الحفظ والبحث يحدث هنا وليس في المتصفح.',
+      visual: 'قاعدة البيانات: بحث في السجلات ➜ إرجاع النتائج',
+      active: ['database'],
+      done: ['frontend', 'backend'],
+      conns: [],
+      status: { frontend: 'بانتظار النتيجة', backend: 'ينتظر النتائج', database: 'تبحث عن المنتجات…' },
+      search: true,
+      results: false
+    },
+    {
+      title: 'الخطوة 6: الواجهة الخلفية ترسل النتائج إلى الواجهة الأمامية',
+      text: 'تستقبل الواجهة الخلفية المعلومات من قاعدة البيانات، ثم ترسل النتائج مرة أخرى عبر الشبكة إلى الواجهة الأمامية لعرضها على المستخدم.',
+      visual: 'قاعدة البيانات ➜ الواجهة الخلفية ➜ الواجهة الأمامية',
+      active: ['backend'],
+      done: ['frontend', 'database'],
+      conns: [
+        { id: 'conn2', dir: 'dir-right', label: 'نتائج المطابقة' },
+        { id: 'conn1', dir: 'dir-right', label: 'نتائج البحث' }
+      ],
+      status: { frontend: 'يستقبل النتائج…', backend: 'يرسل النتائج…', database: 'أرجعت النتائج' },
+      search: true,
+      results: true
+    },
+    {
+      title: 'الخطوة 7: الواجهة الأمامية تعرض المنتجات للمستخدم',
+      text: 'تصل النتائج إلى المتصفح، فتقوم الواجهة الأمامية بعرضها بشكل منظم وجميل: صور المنتجات وأسعارها وأزرار الشراء. وهكذا تكتمل الرحلة.',
+      visual: 'الواجهة الأمامية ➜ المستخدم (عرض النتائج)',
+      active: ['frontend'],
+      done: ['backend', 'database'],
+      conns: [],
+      status: { frontend: 'عرضت النتائج ✅', backend: 'أكمل المهمة', database: 'أرجعت النتائج' },
+      search: true,
+      results: true
+    }
+  ];
+
+  var NODE_IDS = { frontend: 'nodeFrontend', backend: 'nodeBackend', database: 'nodeDatabase' };
+  var flowIndex = 0;
+  var flowPlaying = false;
+  var flowStarted = false;
+  var flowTimer = null;
+  var flowToken = 0;
+  var flowResultsShown = false;
+
+  function flowNode(key) { return document.getElementById(NODE_IDS[key]); }
+
+  function setMiniScreen(step) {
+    var search = $('#miniSearch');
+    var query = $('#miniQuery');
+    var empty = $('#miniEmpty');
+    var results = $$('#miniResults .mini-result');
+    if (search && query) {
+      if (step.search) {
+        search.classList.add('typing');
+        query.textContent = 'هاتف ذكي';
+      } else {
+        search.classList.remove('typing');
+        query.textContent = 'اكتب كلمة البحث…';
+      }
+    }
+    if (empty) { empty.style.display = step.results ? 'none' : 'block'; }
+    if (step.results) {
+      /* تظهر النتائج مرة واحدة فقط ولا تُعاد حركتها عند الانتقال بين خطوتين تعرضان النتائج */
+      if (!flowResultsShown) {
+        var token = ++flowToken;
+        results.forEach(function (r, idx) {
+          setTimeout(function () {
+            if (token === flowToken) { r.classList.add('show'); }
+          }, idx * 240);
+        });
+      }
+    } else {
+      flowToken++;
+      results.forEach(function (r) { r.classList.remove('show'); });
+    }
+    flowResultsShown = !!step.results;
+  }
+
+  function setStatus(key, text) {
+    var el = document.getElementById('status' + cap(key));
+    if (el) { el.textContent = text; }
+  }
+
+  function renderDots() {
+    var wrap = $('#stepDots');
+    if (!wrap) { return; }
+    if (wrap.children.length !== FLOW_STEPS.length) {
+      wrap.innerHTML = '';
+      FLOW_STEPS.forEach(function (_, i) {
+        var b = document.createElement('button');
+        b.type = 'button';
+        b.className = 'step-dot';
+        b.setAttribute('aria-label', 'الانتقال إلى الخطوة ' + (i + 1));
+        b.addEventListener('click', function () {
+          pauseFlow();
+          applyFlowStep(i);
+        });
+        wrap.appendChild(b);
+      });
+    }
+    $$('.step-dot', wrap).forEach(function (d, i) {
+      d.classList.toggle('now', i === flowIndex);
+      d.classList.toggle('past', i < flowIndex);
+    });
+  }
+
+  function applyFlowStep(i) {
+    var s = FLOW_STEPS[i];
+    if (!s) { return; }
+    flowIndex = i;
+
+    Object.keys(NODE_IDS).forEach(function (key) {
+      var el = flowNode(key);
+      if (!el) { return; }
+      el.classList.remove('active', 'done');
+      if (s.active.indexOf(key) > -1) { el.classList.add('active'); }
+      else if (s.done.indexOf(key) > -1) { el.classList.add('done'); }
+    });
+
+    ['conn1', 'conn2'].forEach(function (id) {
+      var c = document.getElementById(id);
+      if (c) { c.classList.remove('active', 'dir-left', 'dir-right'); }
+    });
+    s.conns.forEach(function (c) {
+      var el = document.getElementById(c.id);
+      if (el) { el.classList.add('active', c.dir); }
+      var tag = document.getElementById(c.id + 'Tag');
+      if (tag) { tag.textContent = c.label; }
+    });
+
+    Object.keys(s.status).forEach(function (key) { setStatus(key, s.status[key]); });
+    setMiniScreen(s);
+
+    var countEl = $('#stepCount');
+    if (countEl) {
+      countEl.textContent = 'الخطوة ' + (i + 1) + ' من ' + FLOW_STEPS.length +
+        (i === FLOW_STEPS.length - 1 ? ' • اكتمل التدفق ✅' : '');
+    }
+    var t = $('#stepTitle');
+    if (t) { t.textContent = s.title; }
+    var x = $('#stepText');
+    if (x) { x.textContent = s.text; }
+    var v = $('#stepVisual');
+    if (v) { v.textContent = s.visual ? '🔄 ' + s.visual : ''; }
+
+    renderDots();
+  }
+
+  function updateFlowButtons() {
+    var play = $('#flowPlay');
+    var pause = $('#flowPause');
+    if (play) {
+      play.textContent = flowPlaying ? 'إيقاف مؤقت' : (flowStarted ? 'متابعة التشغيل' : 'شاهد تدفق البيانات');
+    }
+    if (pause) {
+      pause.disabled = (flowStarted && !flowPlaying && flowIndex === FLOW_STEPS.length - 1);
+      pause.textContent = flowPlaying ? '⏸ إيقاف مؤقت' : '▶ متابعة';
+    }
+  }
+
+  function playFlow() {
+    if (!flowStarted) {
+      flowStarted = true;
+      applyFlowStep(0);
+    }
+    flowPlaying = true;
+    var stage = $('#flowStage');
+    if (stage) { stage.classList.remove('paused'); }
+    clearTimeout(flowTimer);
+    flowTimer = setTimeout(nextFlow, FLOW_STEP_MS);
+    updateFlowButtons();
+  }
+
+  function pauseFlow() {
+    flowPlaying = false;
+    clearTimeout(flowTimer);
+    var stage = $('#flowStage');
+    if (stage) { stage.classList.add('paused'); }
+    updateFlowButtons();
+  }
+
+  function nextFlow() {
+    if (flowIndex < FLOW_STEPS.length - 1) {
+      applyFlowStep(flowIndex + 1);
+      if (flowPlaying) {
+        clearTimeout(flowTimer);
+        flowTimer = setTimeout(nextFlow, FLOW_STEP_MS);
+      }
+    } else {
+      flowPlaying = false;
+      clearTimeout(flowTimer);
+      updateFlowButtons();
+    }
+  }
+
+  function resetFlow() {
+    clearTimeout(flowTimer);
+    flowPlaying = false;
+    flowStarted = false;
+    flowIndex = 0;
+    flowToken++;
+    flowResultsShown = false;
+    var stage = $('#flowStage');
+    if (stage) { stage.classList.remove('paused'); }
+    Object.keys(NODE_IDS).forEach(function (key) {
+      var el = flowNode(key);
+      if (el) { el.classList.remove('active', 'done'); }
+    });
+    ['conn1', 'conn2'].forEach(function (id) {
+      var c = document.getElementById(id);
+      if (c) { c.classList.remove('active', 'dir-left', 'dir-right'); }
+      var tag = document.getElementById(id + 'Tag');
+      if (tag) { tag.textContent = id === 'conn1' ? 'طلب البحث' : 'استعلام'; }
+    });
+    setStatus('frontend', 'بانتظار البحث');
+    setStatus('backend', 'جاهز');
+    setStatus('database', 'جاهزة');
+    setMiniScreen({ search: false, results: false });
+    var countEl = $('#stepCount');
+    if (countEl) { countEl.textContent = 'الخطوة 0 من ' + FLOW_STEPS.length; }
+    var t = $('#stepTitle');
+    if (t) { t.textContent = 'الرحلة جاهزة للانطلاق'; }
+    var x = $('#stepText');
+    if (x) { x.textContent = 'اضغط زر «شاهد تدفق البيانات» لترى كيف ينتقل طلب البحث بين الطبقات الثلاثة خطوة بخطوة.'; }
+    var v = $('#stepVisual');
+    if (v) { v.textContent = ''; }
+    renderDots();
+    updateFlowButtons();
+  }
+
+  function initFlow() {
+    var play = $('#flowPlay');
+    var pause = $('#flowPause');
+    var next = $('#flowNext');
+    var replay = $('#flowReplay');
+    if (play) {
+      play.addEventListener('click', function () {
+        if (flowPlaying) { pauseFlow(); }
+        else if (flowStarted && flowIndex === FLOW_STEPS.length - 1) { resetFlow(); playFlow(); }
+        else { playFlow(); }
+      });
+    }
+    if (pause) {
+      pause.addEventListener('click', function () {
+        if (flowPlaying) { pauseFlow(); } else { playFlow(); }
+      });
+    }
+    if (next) {
+      next.addEventListener('click', function () {
+        pauseFlow();
+        if (flowIndex < FLOW_STEPS.length - 1) {
+          flowStarted = true;
+          applyFlowStep(flowIndex + 1);
+        } else {
+          applyFlowStep(FLOW_STEPS.length - 1);
+        }
+      });
+    }
+    if (replay) {
+      replay.addEventListener('click', function () {
+        resetFlow();
+        playFlow();
+      });
+    }
+    renderDots();
+    updateFlowButtons();
+  }
+
+  /* ======================================================================
+     الاختبار النهائي (12 سؤالًا)
+     ====================================================================== */
+  var EXAM = [
+    {
+      q: 'ما الجزء الذي يراه المستخدم ويتفاعل معه في تطبيق الويب؟',
+      opts: ['قاعدة البيانات', 'الواجهة الأمامية', 'الواجهة الخلفية', 'الخادم'],
+      correct: 1,
+      exp: 'الواجهة الأمامية هي الجزء الظاهر على الشاشة داخل المتصفح، وهو ما يتعامل معه المستخدم بالضغط والكتابة.'
+    },
+    {
+      q: 'ما وظيفة الواجهة الخلفية في تطبيق الويب؟',
+      opts: ['تخزين البيانات', 'عرض الصور', 'معالجة الطلبات', 'إدخال البيانات'],
+      correct: 2,
+      exp: 'الواجهة الخلفية تعمل على الخادم: تستقبل الطلبات، تعالجها، تطبق قواعد التطبيق، ثم تعيد النتيجة.'
+    },
+    {
+      q: 'ما الطبقة المسؤولة عن حفظ البيانات وتوفيرها عند الحاجة؟',
+      opts: ['قاعدة البيانات', 'الواجهة الأمامية', 'المتصفح', 'الواجهة الخلفية'],
+      correct: 0,
+      exp: 'قاعدة البيانات تحفظ المعلومات بشكل منظم وتعيدها عندما تطلبها الواجهة الخلفية.'
+    },
+    {
+      q: 'ما المثال الذي يمثل تطبيق ويب؟',
+      opts: ['الآلة الحاسبة', 'لوحة المفاتيح', 'الطابعة', 'خدمة البريد الإلكتروني عبر الويب'],
+      correct: 3,
+      exp: 'البريد الإلكتروني عبر الويب تطبيق ويب حقيقي: ينفذ مهام الإرسال والاستلام والتخزين، أما لوحة المفاتيح والطابعة فهما أجهزة.'
+    },
+    {
+      q: 'ما الأجزاء الرئيسية الثلاثة في نموذج تطبيق الويب المبسط؟',
+      opts: ['شاشة وطابعة وماوس', 'واجهة أمامية وواجهة خلفية وقاعدة بيانات', 'متصفح وخادم وماوس', 'شبكة وكابل وشاشة'],
+      correct: 1,
+      exp: 'النموذج المبسط لتطبيق الويب يتكون من: واجهة أمامية للعرض، وواجهة خلفية للمعالجة، وقاعدة بيانات للحفظ.'
+    },
+    {
+      q: 'ماذا تفعل الواجهة الأمامية عند البحث عن منتج؟',
+      opts: ['تستقبل كلمات البحث', 'تخزن المنتجات', 'تتحقق من المخزون', 'تدير قاعدة البيانات'],
+      correct: 0,
+      exp: 'الواجهة الأمامية هي التي تستقبل كلمات البحث من المستخدم، ثم ترسلها إلى الواجهة الخلفية.'
+    },
+    {
+      q: 'ماذا تطلب الواجهة الخلفية من طبقة البيانات عند البحث عن منتج؟',
+      opts: ['صور المستخدم', 'كلمة المرور', 'المنتجات المطابقة للبحث', 'شاشة البحث'],
+      correct: 2,
+      exp: 'الواجهة الخلفية تسأل قاعدة البيانات عن المنتجات المطابقة لكلمة البحث، ثم تعيد النتائج للواجهة الأمامية.'
+    },
+    {
+      q: 'أين تعمل الواجهة الخلفية عادة؟',
+      opts: ['على الشاشة', 'داخل لوحة المفاتيح', 'داخل الطابعة', 'على الخادم'],
+      correct: 3,
+      exp: 'الواجهة الخلفية تعمل على الخادم (Server) وهو جهاز قوي يعمل طوال الوقت ويخدم كل المستخدمين.'
+    },
+    {
+      q: 'ما الذي تعرضه الواجهة الأمامية للمستخدم؟',
+      opts: ['المحتوى ونتائج البحث', 'قواعد التطبيق', 'ملفات الخادم', 'جداول قاعدة البيانات'],
+      correct: 0,
+      exp: 'الواجهة الأمامية تعرض المحتوى ونتائج البحث بشكل منظم، بينما القواعد والجداول تبقى في الخلفية.'
+    },
+    {
+      q: 'ما البيانات التي يمكن أن تخزنها قاعدة بيانات متجر إلكتروني؟',
+      opts: ['أزرار الموقع', 'معلومات المنتجات وسجل الطلبات', 'شاشة المتصفح', 'نموذج البحث فقط'],
+      correct: 1,
+      exp: 'قاعدة البيانات تخزن معلومات المنتجات وحسابات المستخدمين وسجل الطلبات، وليس عناصر الواجهة.'
+    },
+    {
+      q: 'ما أول خطوة في تدفق البحث عن منتج في متجر إلكتروني؟',
+      opts: ['تعرض الواجهة النتائج', 'تعيد قاعدة البيانات النتائج', 'تستقبل الواجهة الأمامية كلمات البحث', 'تطبق الواجهة الخلفية قواعد التطبيق'],
+      correct: 2,
+      exp: 'البداية دائمًا من المستخدم: تكتب كلمة البحث فتستقبلها الواجهة الأمامية، وبعدها يبدأ إرسال الطلب.'
+    },
+    {
+      q: 'ماذا يحدث بعد أن ترسل الواجهة الأمامية كلمات البحث إلى الواجهة الخلفية؟',
+      opts: ['تطلب الواجهة الخلفية المنتجات المطابقة من طبقة البيانات', 'تعرض النتائج مباشرة', 'تحذف قاعدة البيانات', 'تغلق المتصفح'],
+      correct: 0,
+      exp: 'بعد وصول الطلب إلى الواجهة الخلفية، تسأل هي طبقة البيانات عن المنتجات المطابقة لتعيد النتائج.'
+    }
+  ];
+
+  var examIndex = 0;
+  var examScore = 0;
+  var examAnswered = false;
+  var examLog = [];
+  var RING_C = 2 * Math.PI * 85;
+
+  function examUpdateProgress() {
+    var done = examIndex + (examAnswered ? 1 : 0);
+    var pct = Math.round((done / EXAM.length) * 100);
+    var fill = $('#examProgressFill');
+    if (fill) { fill.style.width = pct + '%'; }
+    var bar = $('#examProgressBar');
+    if (bar) { bar.setAttribute('aria-valuenow', String(done)); }
+  }
+
+  function examRender() {
+    var q = EXAM[examIndex];
+    examAnswered = false;
+
+    var pText = $('#examProgressText');
+    if (pText) { pText.textContent = 'السؤال ' + (examIndex + 1) + ' من ' + EXAM.length; }
+    var live = $('#examLiveScore');
+    if (live) { live.textContent = String(examScore); }
+
+    var qText = $('#examQuestionText');
+    if (qText) {
+      qText.innerHTML = '<span class="qnum">' + (examIndex + 1) + ')</span> <span></span>';
+      $('.qnum + span', qText).textContent = q.q;
+    }
+
+    var opts = $('#examOptions');
+    if (opts) {
+      opts.innerHTML = '';
+      q.opts.forEach(function (text, j) {
+        var b = document.createElement('button');
+        b.type = 'button';
+        b.className = 'opt';
+        b.innerHTML = '<span class="key">' + KEYS[j] + '</span><span></span>';
+        $('.key + span', b).textContent = text;
+        b.addEventListener('click', function () { examAnswer(j); });
+        opts.appendChild(b);
+      });
+    }
+
+    var fb = $('#examFeedback');
+    if (fb) { fb.className = 'feedback'; fb.innerHTML = ''; }
+
+    var nextBtn = $('#examNext');
+    if (nextBtn) {
+      nextBtn.disabled = true;
+      nextBtn.textContent = (examIndex === EXAM.length - 1) ? 'عرض النتيجة' : 'السؤال التالي';
+    }
+    var hint = $('#examHint');
+    if (hint) { hint.textContent = 'اختر إجابة واحدة للمتابعة'; }
+
+    examUpdateProgress();
+  }
+
+  function examAnswer(chosen) {
+    if (examAnswered) { return; }
+    examAnswered = true;
+    var q = EXAM[examIndex];
+    var btns = $$('#examOptions .opt');
+    btns.forEach(function (b) { b.classList.add('locked'); });
+
+    var ok = chosen === q.correct;
+    if (ok) {
+      examScore++;
+      if (btns[chosen]) { btns[chosen].classList.add('correct'); }
+    } else {
+      if (btns[chosen]) { btns[chosen].classList.add('wrong'); }
+      if (btns[q.correct]) { btns[q.correct].classList.add('correct'); }
+    }
+    examLog.push({ q: q.q, chosen: chosen, correct: q.correct, ok: ok, exp: q.exp });
+
+    var fb = $('#examFeedback');
+    if (fb) { buildFeedback(fb, ok, q.exp); }
+
+    var live = $('#examLiveScore');
+    if (live) { live.textContent = String(examScore); }
+    var nextBtn = $('#examNext');
+    if (nextBtn) { nextBtn.disabled = false; }
+    var hint = $('#examHint');
+    if (hint) { hint.textContent = ok ? 'إجابة صحيحة، انتقل للسؤال التالي' : 'الإجابة الصحيحة موضحة بالأخضر'; }
+
+    examUpdateProgress();
+  }
+
+  function examShowResult() {
+    var total = EXAM.length;
+    var pct = Math.round((examScore / total) * 100);
+
+    var body = $('#examBody');
+    var result = $('#examResult');
+    if (body) { body.hidden = true; }
+    if (result) { result.hidden = false; }
+
+    var scoreEl = $('#resultScore');
+    if (scoreEl) { scoreEl.textContent = examScore + ' / ' + total; }
+    var pctEl = $('#resultPercent');
+    if (pctEl) { pctEl.textContent = pct + '%'; }
+
+    var ring = $('#ringFg');
+    if (ring) {
+      ring.style.strokeDashoffset = String(RING_C);
+      setTimeout(function () {
+        ring.style.strokeDashoffset = String(RING_C - (pct / 100) * RING_C);
+      }, 120);
+    }
+
+    var title = 'انتهى الاختبار';
+    var msg = '';
+    if (pct >= 90) { title = 'ممتاز! نتيجة رائعة'; msg = 'أتقنت طبقات تطبيقات الويب، أداء متميز 🌟'; }
+    else if (pct >= 75) { title = 'جيد جدًا! أحسنت'; msg = 'فهمك للطبقات الثلاثة قوي، واصل التقدم 👏'; }
+    else if (pct >= 50) { title = 'جيد، وتحتاج إلى مراجعة'; msg = 'راجع الأقسام التعليمية ثم أعد الاختبار 💪'; }
+    else { title = 'لا تيأس!'; msg = 'أعد قراءة الدروس بتركيز ثم أعد الاختبار، ستتحسن نتيجتك بالتأكيد 📚'; }
+
+    var tEl = $('#resultTitle');
+    if (tEl) { tEl.textContent = title; }
+    var mEl = $('#resultMsg');
+    if (mEl) { mEl.textContent = msg; }
+
+    var stats = $('#resultStats');
+    if (stats) {
+      stats.innerHTML =
+        '<div class="result-stat"><div class="n">' + examScore + '</div><div class="l">إجابات صحيحة</div></div>' +
+        '<div class="result-stat"><div class="n">' + (total - examScore) + '</div><div class="l">إجابات خاطئة</div></div>' +
+        '<div class="result-stat"><div class="n">' + pct + '%</div><div class="l">النسبة النهائية</div></div>';
+    }
+
+    var review = $('#reviewList');
+    if (review) {
+      review.innerHTML = '';
+      examLog.forEach(function (item, i) {
+        var div = document.createElement('div');
+        div.className = 'review-item ' + (item.ok ? 'ok' : 'no');
+        div.innerHTML =
+          '<div class="r-head"><span class="r-badge">' + (item.ok ? 'صحيحة' : 'خاطئة') + '</span>' +
+          '<span class="r-q">' + (i + 1) + '. ' + item.q + '</span></div>' +
+          '<div class="r-a">إجابتك: <b>' + (item.chosen >= 0 ? KEYS[item.chosen] + ') ' + EXAM[i].opts[item.chosen] : 'لم تُجب') + '</b></div>' +
+          '<div class="r-a">الإجابة الصحيحة: <b>' + KEYS[item.correct] + ') ' + EXAM[i].opts[item.correct] + '</b></div>' +
+          '<div class="r-a" style="margin-top:4px">' + item.exp + '</div>';
+        review.appendChild(div);
+      });
+    }
+  }
+
+  function examStart() {
+    examIndex = 0;
+    examScore = 0;
+    examLog = [];
+    var body = $('#examBody');
+    var result = $('#examResult');
+    if (body) { body.hidden = false; }
+    if (result) { result.hidden = true; }
+    examRender();
+  }
+
+  function initExam() {
+    var nextBtn = $('#examNext');
+    if (nextBtn) {
+      nextBtn.addEventListener('click', function () {
+        if (examIndex < EXAM.length - 1) {
+          examIndex++;
+          examRender();
+        } else {
+          examShowResult();
+        }
+      });
+      // انتقال سلس بالماوس إلى الأعلى عند تغيير السؤال (لراحة المستخدم على الجوال)
+      if ('scrollIntoView' in document.createElement('div')) {
+        nextBtn.addEventListener('click', function () {
+          var panel = $('#exam');
+          if (panel && window.innerWidth < 860 && typeof panel.scrollIntoView === 'function') {
+            panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }
+        });
+      }
+    }
+    var restart = $('#examRestart');
+    if (restart) { restart.addEventListener('click', examStart); }
+    var restart2 = $('#resultRestart');
+    if (restart2) {
+      restart2.addEventListener('click', function () {
+        examStart();
+        var examSection = $('#exam');
+        if (examSection && typeof examSection.scrollIntoView === 'function') {
+          examSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
+    }
+    examStart();
+  }
+
+  /* ---------------------- التشغيل ---------------------- */
+  function init() {
+    buildActivities();
+    initFlow();
+    initExam();
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+})();
+</script>
+</body>
+</html>
